@@ -1,17 +1,29 @@
-import re
-import time
-from itertools import chain
-from collections import OrderedDict
-from bs4 import BeautifulSoup
-from selenium import webdriver
-import geckodriver_autoinstaller
-from selenium.webdriver.firefox.options import Options
-from google.cloud import storage
-# from google.oauth2 import service_account
 import os
+from google.cloud import storage
+from datetime import date
+from selenium.webdriver.firefox.options import Options
+from selenium import webdriver
+from bs4 import BeautifulSoup
+from collections import OrderedDict
+from itertools import chain
+import time
+import re
+
+
+def get_driver(headless=True):
+    """
+    Initializes Firefox driver
+    """
+    options = Options()
+    options.headless = headless
+    driver = webdriver.Firefox(options=options)
+    return driver
 
 
 def soup_get(url, driver):
+    """
+    retrieve BeautifulSoup Object form url and driver
+    """
     driver.get(url)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     time.sleep(4)
@@ -20,10 +32,16 @@ def soup_get(url, driver):
 
 
 def href_finder(soup_ele):
+    """
+    Finds all a["href"] in beautifulSoup object
+    """
     return [a['href'] for a in soup_ele.findAll('a', href=True)]
 
 
 def n_pages(hrefs):
+    """
+    Get number of pages to search
+    """
     cps = [re.findall('cp=(\w+)', a) for a in hrefs]
     cps = list(filter(None, cps))
     return max([int(b[0]) for b in cps])
@@ -40,21 +58,41 @@ def href_extr(hrefs):
     return exposes
 
 
-def get_driver(headless=True):
-    options = Options()
-    options.headless = headless
-    driver = webdriver.Firefox(options=options)
-    return driver
-
-
 def projekt_finder(hrefs):
+    """
+    Some of the Exposes are featured projects identified here
+    """
     projekts = [re.findall('\/projekte\/expose\/(\w+)', a) for a in hrefs]
     projekts = list(filter(None, projekts))
     projekts = [*projekts]
     return list(set(chain.from_iterable(projekts)))
 
 
-def get_data(url, headless=True, test_num=None):
+def upload_blob(bucket_name, source_file_name, destination_blob_name):
+    """Uploads a file to the bucket."""
+    # storage_client = storage.Client(credentials=credentials)
+    storage_client = storage.Client()
+
+    bucket = storage_client.get_bucket(bucket_name)
+    blob = bucket.blob(destination_blob_name)
+
+    blob.upload_from_string(source_file_name)
+
+    print('File {} uploaded to {}.'.format(
+        source_file_name,
+        destination_blob_name))
+
+
+def write_to_disc(Exposes):
+    with open("expose.txt",  "w") as f:
+        f. write(Exposes)
+
+
+def main(url, bucket_name, source_file_name, headless=True, test_num=None,
+         city="Berlin", flat_house="haus", rent_buy="kaufen", to_disc=False):
+
+    url = 'https://www.immowelt.de/liste/'+city+'/'+flat_house+'/'+rent_buy
+    destination_blob_name = date.today()
     Exposes = list()
     Projekte = list()
 
@@ -75,40 +113,17 @@ def get_data(url, headless=True, test_num=None):
         soup_new = soup_get(new_url, driver)
         href_new = href_finder(soup_new)
         Exposes = Exposes+href_extr(href_new)
-        Projekte = Projekte + projekt_finder(href_new)
-    Projekte_text = " ".join(Projekte)
+        Projekte = Projekte + projekt_finder(href_new)  # not used for now.
     Exposes_text = " ".join(Exposes)
-
-    return Exposes_text, Projekte_text
-
-
-def upload_blob(bucket_name, source_file_name, destination_blob_name):
-    """Uploads a file to the bucket."""
-    # storage_client = storage.Client(credentials=credentials)
-    storage_client = storage.Client()
-
-    bucket = storage_client.get_bucket(bucket_name)
-    blob = bucket.blob(destination_blob_name)
-
-    blob.upload_from_string(source_file_name)
-
-    print('File {} uploaded to {}.'.format(
-        source_file_name,
-        destination_blob_name))
+    if to_disc:
+        write_to_disc(Exposes_text)
+    else:
+        upload_blob(bucket_name, source_file_name, destination_blob_name)
+    return print(f'You have just retrieved {len(Exposes)} exposes.')
 
 
-# bucket_name = "immobilienpreise"
-# source_file_name = Exposes_text
-# destination_blob_name = "Projekte_n.txt"
-# upload_blob(bucket_name, source_file_name, destination_blob_name)
+if "__name__" == "__main__":
+    credential_path = "credentials.json"
+    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
 
-
-def greeting(request):
-    return "hochgeladen"
-
-
-# with open('ExposeBerlin.txt','w') as f:
-    # f.write(str(Exposes))
-credential_path = "servaccount.json"
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
-url = 'https://www.immowelt.de/liste/berlin/wohnungen/kaufen'
+    Exposes_text, Projekte_text = main()
