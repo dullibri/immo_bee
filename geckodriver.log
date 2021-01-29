@@ -368,3 +368,77 @@ console.warn: SearchSettings: "get: No settings file exists, new profile?" (new 
 console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
 1611847389955	Marionette	INFO	Listening on port 62323
 1611847390069	Marionette	WARN	TLS certificate errors will be ignored for this session
+1611854364081	geckodriver	INFO	Listening on 127.0.0.1:63787
+1611854364784	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofilenf0aFV"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611854367261	Marionette	INFO	Listening on port 63794
+1611854367298	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.immowelt.de/liste/Berlin/haus/kaufen, line 212: TypeError: IwAG.Vars is undefined
+1611860213020	geckodriver	INFO	Listening on 127.0.0.1:64819
+1611860213719	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofileJaTjIk"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611860216298	Marionette	INFO	Listening on port 64826
+1611860216333	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.immowelt.de/liste/berlin/haus/kaufen, line 212: TypeError: IwAG.Vars is undefined
+1611860340543	geckodriver	INFO	Listening on 127.0.0.1:64955
+1611860341256	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofileQc2mdN"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611860343803	Marionette	INFO	Listening on port 64962
+1611860343881	Marionette	WARN	TLS certificate errors will be ignored for this session
+1611860908608	geckodriver	INFO	Listening on 127.0.0.1:65237
+1611860909326	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofileZneNwZ"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611860911679	Marionette	INFO	Listening on port 65244
+1611860911736	Marionette	WARN	TLS certificate errors will be ignored for this session
+1611861009280	geckodriver	INFO	Listening on 127.0.0.1:65403
+1611861009981	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofileO01Ach"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611861012600	Marionette	INFO	Listening on port 65410
+1611861012684	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.immowelt.de/liste/berlin/haus/kaufen, line 212: TypeError: IwAG.Vars is undefined
+1611861296467	geckodriver	INFO	Listening on 127.0.0.1:49194
+1611861297168	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofileddSSdz"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611861299775	Marionette	INFO	Listening on port 49201
+1611861299795	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.immowelt.de/liste/berlin/haus/kaufen, line 212: TypeError: IwAG.Vars is undefined
+1611861378892	geckodriver	INFO	Listening on 127.0.0.1:49338
+1611861379602	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofileoF337K"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611861382189	Marionette	INFO	Listening on port 49345
+1611861382228	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.immowelt.de/liste/berlin/haus/kaufen, line 212: TypeError: IwAG.Vars is undefined
+1611861461739	geckodriver	INFO	Listening on 127.0.0.1:49490
+1611861462439	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofile2jphNy"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611861465029	Marionette	INFO	Listening on port 49497
+1611861465138	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.immowelt.de/liste/berlin/haus/kaufen, line 212: TypeError: IwAG.Vars is undefined
+1611861562037	geckodriver	INFO	Listening on 127.0.0.1:49651
+1611861562735	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofiletvstMX"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611861565398	Marionette	INFO	Listening on port 49659
+1611861565454	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.immowelt.de/liste/berlin/haus/kaufen, line 212: TypeError: IwAG.Vars is undefined
+1611861695246	geckodriver	INFO	Listening on 127.0.0.1:49865
+1611861695953	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofileUZrDGX"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611861698559	Marionette	INFO	Listening on port 49873
+1611861698670	Marionette	WARN	TLS certificate errors will be ignored for this session
+JavaScript error: https://www.immowelt.de/liste/berlin/haus/kaufen, line 212: TypeError: IwAG.Vars is undefined
+1611861929495	geckodriver	INFO	Listening on 127.0.0.1:50117
+1611861930195	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofileeo3SxL"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1611861932695	Marionette	INFO	Listening on port 50124
+1611861932810	Marionette	WARN	TLS certificate errors will be ignored for this session

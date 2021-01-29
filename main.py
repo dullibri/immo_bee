@@ -83,27 +83,27 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
         destination_blob_name))
 
 
-def write_to_disc(Exposes):
-    with open("expose.txt",  "w") as f:
+def write_to_disc(destination_blob_name, Exposes):
+    with open(destination_blob_name,  "w") as f:
         f. write(Exposes)
 
 
-def main(url, bucket_name, source_file_name, headless=True, test_num=None,
-         city="Berlin", flat_house="haus", rent_buy="kaufen", to_disc=False):
+def main(bucket_name, headless=True, test_num=None,
+         city="berlin", flat_house="wohnungen", rent_buy="kaufen", to_disc=False):
 
     url = 'https://www.immowelt.de/liste/'+city+'/'+flat_house+'/'+rent_buy
-    destination_blob_name = date.today()
+    destination_blob_name = str(date.today())+"-"+city+"-"+flat_house+"-"\
+        + rent_buy+".txt"
     Exposes = list()
-    Projekte = list()
 
-    driver = get_driver(headless)
+    driver = get_driver(headless=headless)
 
     # get the first page and the total number of pages, num_pages
     sel_soup = soup_get(url, driver)
     hrefs = href_finder(sel_soup)
     num_pages = n_pages(hrefs)
+
     Exposes = Exposes + href_extr(hrefs)
-    Projekte = Projekte + projekt_finder(hrefs)
 
     if test_num is not None:
         num_pages = test_num
@@ -113,17 +113,16 @@ def main(url, bucket_name, source_file_name, headless=True, test_num=None,
         soup_new = soup_get(new_url, driver)
         href_new = href_finder(soup_new)
         Exposes = Exposes+href_extr(href_new)
-        Projekte = Projekte + projekt_finder(href_new)  # not used for now.
-    Exposes_text = " ".join(Exposes)
+
     if to_disc:
-        write_to_disc(Exposes_text)
+        write_to_disc(destination_blob_name, Exposes)
     else:
-        upload_blob(bucket_name, source_file_name, destination_blob_name)
+        upload_blob(bucket_name, Exposes_text, destination_blob_name)
     return print(f'You have just retrieved {len(Exposes)} exposes.')
 
 
 if "__name__" == "__main__":
     credential_path = "credentials.json"
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
-
-    Exposes_text, Projekte_text = main()
+    bucket_name = 'immobilienpreise'
+    main(bucket_name, to_disc=True)
