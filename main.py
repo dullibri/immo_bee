@@ -114,8 +114,9 @@ def main(bucket_name, headless=True, test_num=None,
         href_new = href_finder(soup_new)
         Exposes = Exposes+href_extr(href_new)
 
+    Exposes_text = " ".join(Exposes)
     if to_disc:
-        write_to_disc(destination_blob_name, Exposes)
+        write_to_disc(destination_blob_name, Exposes_text)
     else:
         upload_blob(bucket_name, Exposes_text, destination_blob_name)
     return print(f'You have just retrieved {len(Exposes)} exposes.')
