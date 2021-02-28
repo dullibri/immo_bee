@@ -92,9 +92,6 @@ def main(bucket_name, headless=True, test_num=None,
          city="berlin", flat_house="wohnungen", rent_buy="kaufen", to_disc=False):
 
     url = 'https://www.immowelt.de/liste/'+city+'/'+flat_house+'/'+rent_buy
-    # https://www.immowelt.de/liste/berlin/wohnungen/kaufen
-    # https://www.immowelt.de/liste/berlin/haeuser/kaufen
-    # https://www.immowelt.de/liste/berlin/wohnungen/mieten
     destination_blob_name = str(date.today())+"-"+city+"-"+flat_house+"-"\
         + rent_buy+".txt"
     Exposes = list()
@@ -125,18 +122,8 @@ def main(bucket_name, headless=True, test_num=None,
     return print(f'You have just retrieved {len(Exposes)} exposes.')
 
 
-if __name__ == "__main__":
+if __name__ == __main__:
     credential_path = "credentials.json"
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
     bucket_name = 'immobilienpreise'
-    #main(bucket_name, to_disc=True)
-    #main(bucket_name, flat_house="haeuser", to_disc=True)
-    main(bucket_name, city="hamburg", to_disc=True)
-    #main(bucket_name, flat_house="haeuser", city="hamburg", to_disc=True)
-
-# with open("2021-01-29-berlin-wohnungen-kaufen.txt", "r") as f:
-#    blub = f.readlines()
-
-# blub = "".join(blub)
-# destination_blob_name = '2021-01-29-berlin-wohnungen-kaufen.txt'
-# upload_blob(bucket_name, blub, destination_blob_name)
+    main(bucket_name, to_disc=True)

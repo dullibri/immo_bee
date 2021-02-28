@@ -23,3 +23,9 @@ print(num_pages)
 
 href_extr(hrefs)
 projekt_finder(hrefs)
+
+
+sel_soup = soup_get(url, driver)
+hrefs = href_finder(sel_soup)
+num_pages = n_pages(hrefs)
+num_pages
