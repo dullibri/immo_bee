@@ -88,10 +88,30 @@ def write_to_disc(destination_blob_name, Exposes):
         f. write(Exposes)
 
 
-def main(bucket_name, headless=True, test_num=None,
-         city="berlin", flat_house="wohnungen", rent_buy="kaufen", to_disc=False):
+test = 'https://www.immowelt.de/liste/ratzeburg/haeuser/kaufen?lat=53.6943&lon=10.7919&sr=50&sort=distance'
 
-    url = 'https://www.immowelt.de/liste/'+city+'/'+flat_house+'/'+rent_buy
+
+def get_details_from_url(url):
+    """
+    input: url, str
+    output: (rent_buy, city, flat_house), tuple
+    """
+    flat_house = "wohnungen"
+    if re.search("haeuser", url):
+        flat_house = "haus"
+    rent_buy = "mieten"
+    if re.search("mieten", url):
+        rent_buy = "kaufen"
+    city = re.search(r'/liste/(.*?)/', url).group(1)
+    return (rent_buy, city, flat_house)
+#(rent_buy, city, flat_house) = get_details_from_url(test)
+
+
+def main(bucket_name, headless=True, test_num=None, url=None, city="berlin", flat_house="wohnungen", rent_buy="kaufen", to_disc=False):
+    if url:
+        rent_buy, city, flat_house = get_details_from_url(url)
+    else:
+        url = 'https://www.immowelt.de/liste/'+city+'/'+flat_house+'/'+rent_buy
     # https://www.immowelt.de/liste/berlin/wohnungen/kaufen
     # https://www.immowelt.de/liste/berlin/haeuser/kaufen
     # https://www.immowelt.de/liste/berlin/wohnungen/mieten
@@ -129,14 +149,7 @@ if __name__ == "__main__":
     credential_path = "credentials.json"
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
     bucket_name = 'immobilienpreise'
-    #main(bucket_name, to_disc=True)
-    #main(bucket_name, flat_house="haeuser", to_disc=True)
-    main(bucket_name, city="hamburg", to_disc=True)
-    #main(bucket_name, flat_house="haeuser", city="hamburg", to_disc=True)
-
-# with open("2021-01-29-berlin-wohnungen-kaufen.txt", "r") as f:
-#    blub = f.readlines()
-
-# blub = "".join(blub)
-# destination_blob_name = '2021-01-29-berlin-wohnungen-kaufen.txt'
-# upload_blob(bucket_name, blub, destination_blob_name)
+    # main(bucket_name, to_disc=True)
+    # main(bucket_name, flat_house="haeuser", to_disc=True)
+    #main(bucket_name, city="hamburg", flat_house="haeuser", to_disc=True)
+    main(bucket_name, url="https://www.immowelt.de/liste/ratzeburg/haeuser/kaufen?lat=53.6943&lon=10.7919&sr=50&sort=distance", to_disc=True)

@@ -986,3 +986,33 @@ Exiting due to channel error.
 Exiting due to channel error.
 Exiting due to channel error.
 Exiting due to channel error.
+1614530919268	geckodriver	INFO	Listening on 127.0.0.1:49260
+1614530920077	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofilej8x3V2"
+*** You are running in headless mode.
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614530923667	Marionette	INFO	Listening on port 49271
+1614532849004	geckodriver	INFO	Listening on 127.0.0.1:50490
+1614532849390	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofileyuyEP5"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614532874483	Marionette	INFO	Listening on port 50504
+1614532874527	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614533859740	geckodriver	INFO	Listening on 127.0.0.1:51236
+1614533860083	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofilevVWcA6"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614533862309	Marionette	INFO	Listening on port 51247
+1614533862388	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614548158907	geckodriver	INFO	Listening on 127.0.0.1:54597
+1614548159616	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofileGdKiHn"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614548161849	Marionette	INFO	Listening on port 54609
+1614548161928	Marionette	WARN	TLS certificate errors will be ignored for this session
+1614548897544	geckodriver	INFO	Listening on 127.0.0.1:55055
+1614548898266	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofilerLJiVy"
+*** You are running in headless mode.
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1614548900537	Marionette	INFO	Listening on port 55066
+1614548900559	Marionette	WARN	TLS certificate errors will be ignored for this session
