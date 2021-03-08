@@ -1,9 +1,6 @@
-1. einen bucket anlegen
-2. ein service-account einrichten (https://developers.google.com/identity/protocols/oauth2/service-account#python)
-  - rolle auf storage admin setzen
-  - key als json runterladen
-  - outh nutzen, um file credentials zu erstellen.
-3. geckodriver als pip install reinholen.
+## Ziel: 
 
+- Es sollen Miet-/Kaufobjekte für Wohnungen und Häuser im gesamten norddeutschen Raum 1-2 x monatlich abgerufen werden.
+- Einen Guß vom Anstoß bis hin zur aufbereiteten Immobilien Datei.
 
-### geckodriver kriegt man einfacher über ein Docker-Image - das ist der nächste Schritt...
+Danach: Anpassung eines Modells zu Bestimmung eines beliebigen Objekts mit einer hohen Genauigkeit (10% qm-Preis +/-)
