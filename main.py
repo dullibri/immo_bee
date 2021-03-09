@@ -142,7 +142,8 @@ def main(bucket_name, headless=True, test_num=None, url=None, city="berlin", fla
         write_to_disc(destination_blob_name, Exposes_text)
     else:
         upload_blob(bucket_name, Exposes_text, destination_blob_name)
-    return print(f'You have just retrieved {len(Exposes)} exposes.')
+    print(f'You have just retrieved {len(Exposes)} exposes.')
+    return Exposes_text
 
 
 if __name__ == "__main__":
