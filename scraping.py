@@ -143,17 +143,18 @@ def clean_whitespace(tmp_text):
     """Entfernt \r und \n und leere Zeilen sowohl aus
     Listen von Text als auch von Textteilen."""
 
-    if checktype(tmp_text):
+    if checktype(tmp_text): # liste von str
+        print("langer text")
         tmp_res = []
         for line in tmp_text:
-            line_clean = re.sub(r'\r\n[ ]*','',line)
+            line_clean = re.sub(r'\r\n[ ]*','',line) # preceeding \r\n and whitespaces
             len_line = len(line_clean)
             if len_line==0 or line_clean==" "*len_line:
                 continue
             tmp_res.append(line_clean)
         return tmp_res
-    else:
-        return re.sub(r'\r\n[ ]*','',tmp_text)
+    else: # nur ein str
+        return re.sub(r'\r\n[ ]*|[ ]*$','',tmp_text)
 
 data
 clean_whitespace(tmp_lang)
