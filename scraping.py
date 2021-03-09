@@ -24,10 +24,13 @@ def prepare_urls(filename):
 urls =prepare_urls(test)
 
 def get_id_from_url(url):
+    """Gibt die Objekt-ID aus einer url zurück"""
     id = re.search(r'(?<=expose\/).*',url)
     return id.group(0)
 
-
+#--------------veraltete Scraping Version, Fehler: hat kein Try/Except für alle Felder einzeln,
+# hat noch kein Data Cleaning.
+# hat noch keine beschreibung und Energie mit aufgenommen.
 def scrape_houses(urls):
     data = {}
     request = urllib3.PoolManager()
@@ -62,95 +65,97 @@ def scrape_houses(urls):
 data = scrape_houses(urls)
 data
 
+#----------------------Kompletter Scraping Vorgang für eine Objekt-Seite
 url = urls[0]
 url='https://www.immowelt.de/expose/2xcl64z'
 
 res = request.request("GET", url)
-parser = etree.HTMLParser(recover=True)
+parser = etree.HTMLParser(recover=True, encoding="utf-8")
 tree = etree.HTML(res.data, parser)
+
+# hiermit wird die Test-Seite gedownloadet.
+#with open("beispiel_haus_mieten.txt",'a') as f:
+#    f.write(res.data.decode('utf-8'))
+
 id = get_id_from_url(url)
 data = {}
 data[id] = {}
 data[id]['url'] = url
-data
-try:
-    data[id]['title'] = tree.xpath('//title/text()')[0]
-except:
-    print('id: ',id, ' not tile could be retrieved')
-try:
-    data[id]['ort'] = tree.xpath('//div[@class="location"]/span/text()')
-except:
-    print('id: ',id, ' no location(ort) could be retrieved')
-try:
-    data[id]['merkmale'] = tree.xpath('//div[@class="merkmale"]/text()')
-except:
-    print('id: ',id, ' no characteristics(merkmale) could be retrieved')
-try:
-    data[id]['stadteilbewertung'] =  tree.xpath('//div[contains(@id,"divRating")]')
-except:
-    print('id: ',id, ' no rating(stadteilbewertung) could be retrieved')
-try:
-    data[id]['preis'] =  tree.xpath('//div[@class="hardfact"]/strong/strong/text()')
-except:
-    print('id: ',id, ' no price(preis) could be retrieved')
-try:
-    data[id]['anzahl_raeume'] =  tree.xpath('//div[@class="hardfact rooms"]/text()')
-except:
-    print('id: ',id, ' no number of rooms(anzahl_raeume) could be retrieved')
-try:
-    data[id]['wohnflaeche'] =  tree.xpath('//div[@class="hardfact "]/text()')[3]
-except:
-    print('id: ',id, ' no living area (wohnflaeche) could be retrieved')
-try:
-    data[id]['grundstuecksflaeche'] =  tree.xpath('//div[@class="hardfact "]/text()')[5]
-except:
-    print('id: ',id, ' no lot size (grundstuecksflaeche) could be retrieved')
-try:
-    data[id]['beschreibung']= tree.xpath('//div[@class="section_content iw_right"]//span//text()')
-except:
-    print('id: ',id, ' no description (beschreibung) could be retrieved')
-energieListe=["Energieausweistyp","Baujahr laut Energieausweis","Wesentliche EnergietrÃ¤ger","Endenergieverbrauch","Energieeffizienzklasse","GÃ¼ltigkeit"]#,"Wesentliche EnergietrÃ¤ger","Endenergieverbrauch'']
+xpath_patterns = {
+'title':'//title/text()',
+'ort':'//div[@class="location"]/span/text()',
+'merkmale':'//div[@class="merkmale"]/text()',
+'stadteilbewertung':'//div[contains(@id,"divRating")]',
+'preis':'//div[@class="hardfact"]/strong/strong/text()',
+'anzahl_raeume':'//div[@class="hardfact rooms"]/text()',
+'wohnflaeche':'//div[@class="hardfact "]/text()',
+'grundstuecksflaeche':'//div[@class="hardfact "]/text()',
+'weitere_eigenschaften':'//ul[@class="textlist_icon_03 padding_top_none "]//span//text()',
+'beschreibung':'//div[@class="section_content iw_right"]/p//text()',
+}
+for key, xpath_pattern in xpath_patterns.items():
+    try: # falls kein Treffer in xpath
+        uncleanContent = tree.xpath(xpath_pattern)
+    except:
+        continue
+    #print(key)
+    data[id][key]  = uncleanContent
 
-data = {}
-data[id] = {}
+#-----manche xpath - Element sind Listen und man benötigt nur wenige Elemente
+for key in ['title','ort','merkmale','anzahl_raeume']:
+    data[id][key] = data[id][key][0]
+
+data[id]['wohnflaeche'] = data[id]['wohnflaeche'][3]
+data[id]['grundstuecksflaeche'] = data[id]['grundstuecksflaeche'][5]
+
+data
+
+#---- die Energiefelder werden direkt ausgelesen und das geht am einfachsten über eine for loop.
+energieListe=["Energieausweistyp","Baujahr laut Energieausweis","Wesentliche Energieträger","Endenergieverbrauch","Energieeffizienzklasse","Gültigkeit"]#,"Wesentliche EnergietrÃ¤ger","Endenergieverbrauch'']
 for item in energieListe:
     # vollständige liste
     # tree.xpath('//div[@class="datarow clear"]//span//text()')
+    #print(item)
     path = '//div[@class="datarow clear" and contains(string(),"'+item+'")]//span//text()'
     data[id][item]= str(tree.xpath(path)[1])
 
+# ------- Bereinigung der Felder um \r\n und whitespaces
+# es gibt kurze, nur ein text-Element umfassende zu reinigende Elemente
+# und lange, listen von texten. Die beiden werden nun automatisch unterschieden und
+# jeweils entsprechend gereinigt.
+
+tmp_lang = tree.xpath('//div[@class="section_content iw_right"]/p//text()')
+tmp_lang
 
 
-tmp_text = tree.xpath('//div[@class="section_content iw_right"]/p//text()')
-tmp_text
+tmp_kurz = data[id]['wohnflaeche']
+tmp_kurz
+#--- check of checktype funktioniert
+checktype(tmp_lang)
+checktype(tmp_kurz)
 
-data[id]['Eigenschaften'] = tree.xpath('//ul[@class="textlist_icon_03 padding_top_none "]//span//text()')
-data[id]['weitere_eigenschaften']
+def checktype(obj):
+    """Prüfen, ob es sich um eine Liste von Strings handelt
+    basiert auf https://stackoverflow.com/questions/18495098/python-check-if-an-object-is-a-list-of-strings"""
+    return bool(obj) and all(isinstance(elem, str) for elem in obj) and not all(len(elem)==1 for elem in obj)
 
+def clean_whitespace(tmp_text):
+    """Entfernt \r und \n und leere Zeilen sowohl aus
+    Listen von Text als auch von Textteilen."""
 
+    if checktype(tmp_text):
+        tmp_res = []
+        for line in tmp_text:
+            line_clean = re.sub(r'\r\n[ ]*','',line)
+            len_line = len(line_clean)
+            if len_line==0 or line_clean==" "*len_line:
+                continue
+            tmp_res.append(line_clean)
+        return tmp_res
+    else:
+        return re.sub(r'\r\n[ ]*','',tmp_text)
 
-url = urls[1]
-res = request.request("GET", url)
-parser = etree.HTMLParser(recover=True)
-tree = etree.HTML(res.data, parser)
-
-id = get_id_from_url(url)
-id
-data[id]={
-    'url':url,
-    'title': tree.xpath('//title/text()')[0],
-    'ort': tree.xpath('//div[@class="location"]/span/text()'),
-    'merkmale':  tree.xpath('//div[@class="merkmale"]/text()'),
-    'stadteilbewertung':  tree.xpath('//div[contains(@id,"divRating")]'),
-    'kaufpreis': tree.xpath('//div[@class="hardfact"]/strong/strong/text()'),
-    'anzahl_raeume': tree.xpath('//div[@class="hardfact rooms"]/text()')[0],
-    'wohnflaeche': tree.xpath('//div[@class="hardfact "]/text()')[3],
-    'grundstuecksflaeche': tree.xpath('//div[@class="hardfact "]/text()')[5],
-    #'energielabel': tree.xpath('//div[@class="datatable energytable clear"]/div/span[@class="datalabel"]/text()')[0],
-    #'energiemerkmale': tree.xpath('//div[@class="datatable energytable clear"]/div/span[@class="datacontent"]/text()')[0],
-    #'energiemerkmale_checkbox':tree.xpath('//ul[contains(string(),"Haustyp")]//text()'),
-    #'objektbeschreibung':tree.xpath('//div[contains(string(),"Objektbeschreibung")]//p/text()'),
-}
-
-(data)
 data
+clean_whitespace(tmp_lang)
+
+clean_whitespace(data[id]['wohnflaeche'])

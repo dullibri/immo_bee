@@ -153,3 +153,4 @@ if __name__ == "__main__":
     # main(bucket_name, flat_house="haeuser", to_disc=True)
     #main(bucket_name, city="hamburg", flat_house="haeuser", to_disc=True)
     main(bucket_name, url="https://www.immowelt.de/liste/ratzeburg/haeuser/kaufen?lat=53.6943&lon=10.7919&sr=50&sort=distance", to_disc=True)
+    main(bucket_name, url="https://www.immowelt.de/liste/ludwigslust-meckl/haeuser/kaufen?lat=53.3283&lon=11.5002&sr=50&sort=distance", to_disc=True)
