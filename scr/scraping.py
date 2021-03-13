@@ -3,9 +3,11 @@ from lxml import etree
 import re
 import json
 
-test = '2021-02-28-hamburg-haeuser-kaufen.txt'
+#test = '2021-02-28-hamburg-haeuser-kaufen.txt'
 #test = '2021-02-28-hamburg-wohnungen-kaufen.txt'
 #test = '2021-02-28-ludwigslust-meckl-haus-mieten.txt'
+#test = '2021-02-28-ludwigslust-meckl-haus-mieten.txt'
+#test = '2021-03-10-norderstedt-wohnungen-mieten.txt'
 #test = ['adsf','asdf']
 #re.findall(r'.txt$',test)
 
@@ -28,7 +30,8 @@ def get_id_from_url(url):
     return id.group(0)
 
 def get_tree(url):
-    res = request.request("GET", url)
+    http = urllib3.PoolManager()
+    res = http.request("GET", url)
     parser = etree.HTMLParser(recover=True, encoding="utf-8")
     return etree.HTML(res.data, parser)
 
@@ -110,17 +113,16 @@ def scrape_object_pages(exposes):
     """Main scrape file, takes exposes (list of ids as str), returns data
     """
     urls =prepare_urls(exposes)
+
     data = {}
     data['objects'] = []
-    for url in urls[:5]:###ACHTUNGACHTUNGACHUNT :5 urls: #
+    for url in urls:#[:5]:###ACHTUNGACHTUNGACHUNT :5 urls: #
         id = get_id_from_url(url)
         obj_data = read_data_from_xpath(url, data)
         data['objects'].append(obj_data)
 
     return data
 
-data = scrape_object_pages(test)
 
-import json
-with open('data.json', 'w', encoding='utf-8') as f:
-    json.dump(data, f, ensure_ascii=False, indent=4)
+
+

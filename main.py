@@ -8,7 +8,8 @@ from collections import OrderedDict
 from itertools import chain
 import time
 import re
-
+from scr.scraping import *
+import json
 
 def get_driver(headless=True):
     """
@@ -85,7 +86,7 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
 
 def write_to_disc(destination_blob_name, Exposes):
     with open(destination_blob_name,  "w") as f:
-        f. write(Exposes)
+        f.write(Exposes)
 
 
 test = 'https://www.immowelt.de/liste/ratzeburg/haeuser/kaufen?lat=53.6943&lon=10.7919&sr=50&sort=distance'
@@ -100,14 +101,14 @@ def get_details_from_url(url):
     if re.search("haeuser", url):
         flat_house = "haus"
     rent_buy = "mieten"
-    if re.search("mieten", url):
+    if re.search("kaufen", url):
         rent_buy = "kaufen"
     city = re.search(r'/liste/(.*?)/', url).group(1)
     return (rent_buy, city, flat_house)
 #(rent_buy, city, flat_house) = get_details_from_url(test)
 
 
-def main(bucket_name, headless=True, test_num=None, url=None, city="berlin", flat_house="wohnungen", rent_buy="kaufen", to_disc=False):
+def get_project_ids(bucket_name, headless=True, test_num=None, url=None, city="berlin", flat_house="wohnungen", rent_buy="kaufen", to_disc=False):
     if url:
         rent_buy, city, flat_house = get_details_from_url(url)
     else:
@@ -143,15 +144,44 @@ def main(bucket_name, headless=True, test_num=None, url=None, city="berlin", fla
     else:
         upload_blob(bucket_name, Exposes_text, destination_blob_name)
     print(f'You have just retrieved {len(Exposes)} exposes.')
-    return Exposes_text
+    return Exposes_text, destination_blob_name
 
+def txt_to_json(oldName):
+    return re.sub(r'.txt','.json',oldName)
+
+def dump_to_json(data, oldName):
+    newName = txt_to_json(oldName)
+    path = os.getcwd()
+    path_data = os.path.join(path, "data", newName)
+    with open(path_data, 'w', encoding='utf-8') as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
+
+def process_url(url):
+    Exposes_text, destination_blob_name = get_project_ids(bucket_name, url = url, to_disc=True)
+    data = scrape_object_pages(Exposes_text)
+    dump_to_json(data,destination_blob_name)
+    print(destination_blob_name,' processed.')
+    
+def create_list_of_urls():
+ 
+    NorderstedtHausKaufen = "https://www.immowelt.de/liste/norderstedt/haeuser/kaufen?lat=53.69494&lon=9.99532&sr=20&sort=distance"
+    NorderstedtWohnungKaufen = "https://www.immowelt.de/liste/norderstedt/wohnungen/kaufen?lat=53.69494&lon=9.99532&sr=20&sort=distance"
+    NorderstedtWohnungMieten="https://www.immowelt.de/liste/norderstedt/wohnungen/mieten?lat=53.69494&lon=9.99532&sr=20&sort=distance"
+    NorderstedtHausMieten = "https://www.immowelt.de/liste/norderstedt/haeuser/mieten?lat=53.69494&lon=9.99532&sr=20&sort=distance"
+    RatzeburgHausKaufen = "https://www.immowelt.de/liste/ratzeburg/haeuser/kaufen?lat=53.6943&lon=10.7919&sr=50&sort=distance"
+    LudwigslustHausKaufen = "https://www.immowelt.de/liste/ludwigslust-meckl/haeuser/kaufen?lat=53.3283&lon=11.5002&sr=50&sort=distance"
+
+    urls = [NorderstedtHausKaufen, NorderstedtHausMieten, NorderstedtWohnungKaufen, NorderstedtWohnungMieten
+           , RatzeburgHausKaufen
+           , LudwigslustHausKaufen
+           ]
+    return urls
 
 if __name__ == "__main__":
     credential_path = "credentials.json"
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
     bucket_name = 'immobilienpreise'
-    # main(bucket_name, to_disc=True)
-    # main(bucket_name, flat_house="haeuser", to_disc=True)
-    #main(bucket_name, city="hamburg", flat_house="haeuser", to_disc=True)
-    main(bucket_name, url="https://www.immowelt.de/liste/ratzeburg/haeuser/kaufen?lat=53.6943&lon=10.7919&sr=50&sort=distance", to_disc=True)
-    main(bucket_name, url="https://www.immowelt.de/liste/ludwigslust-meckl/haeuser/kaufen?lat=53.3283&lon=11.5002&sr=50&sort=distance", to_disc=True)
+    urls = create_list_of_urls()
+    for url in urls:
+        process_url(url)
+
