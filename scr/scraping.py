@@ -122,6 +122,32 @@ def scrape_object_pages(exposes):
         data['objects'].append(obj_data)
 
     return data
+    
+def make_immowelt_urls(locationList = ["luebeck-hansestadt","norderstedt","wismar"]):
+    """
+    creates a list of urls to be scraped for a list of locations for houses and
+    apartments, buy and rent within a radius of 50 km.
+    
+         paramters:
+             locationList (list): strings containing the location names AS
+                                 IMMOWELT writes them.
+         
+         results:
+             urls (list)
+    """
+    radius = 50
+    objectTypeList = ["haeuser","wohnungen"]
+    transactionList = ["kaufen","mieten"]
+    urls = []
+    for location in locationList:
+        for objectType in objectTypeList:
+            for transaction in transactionList:
+
+                tmpList = ["https://www.immowelt.de/liste",location,objectType,transaction]
+                url = "/".join(tmpList)
+                url = url+"?sr="+str(radius)+"&sort=distance"
+                urls.append(url)
+    return urls
 
 
 

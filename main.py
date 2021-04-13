@@ -45,7 +45,9 @@ def n_pages(hrefs):
     """
     cps = [re.findall('cp=(\w+)', a) for a in hrefs]
     cps = list(filter(None, cps))
-    return max([int(b[0]) for b in cps])
+    nPages = max([int(b[0]) for b in cps],default=1)
+    return nPages
+
 
 
 def href_extr(hrefs):
@@ -108,7 +110,7 @@ def get_details_from_url(url):
 #(rent_buy, city, flat_house) = get_details_from_url(test)
 
 
-def get_project_ids(bucket_name, headless=True, test_num=None, url=None, city="berlin", flat_house="wohnungen", rent_buy="kaufen", to_disc=False):
+def get_project_ids(bucket_name, headless=True, url=None, city="berlin", flat_house="wohnungen", rent_buy="kaufen", to_disc=False):
     if url:
         rent_buy, city, flat_house = get_details_from_url(url)
     else:
@@ -129,14 +131,13 @@ def get_project_ids(bucket_name, headless=True, test_num=None, url=None, city="b
 
     Exposes = Exposes + href_extr(hrefs)
 
-    if test_num is not None:
-        num_pages = test_num
+    if num_pages >1:
 
-    for a in range(2, num_pages):  # +1):
-        new_url = url+'?cp='+str(a)
-        soup_new = soup_get(new_url, driver)
-        href_new = href_finder(soup_new)
-        Exposes = Exposes+href_extr(href_new)
+        for a in range(2, num_pages):  # +1):
+            new_url = url+'?cp='+str(a)
+            soup_new = soup_get(new_url, driver)
+            href_new = href_finder(soup_new)
+            Exposes = Exposes+href_extr(href_new)
 
     Exposes_text = " ".join(Exposes)
     if to_disc:
@@ -162,26 +163,13 @@ def process_url(url):
     dump_to_json(data,destination_blob_name)
     print(destination_blob_name,' processed.')
     
-def create_list_of_urls():
- 
-    NorderstedtHausKaufen = "https://www.immowelt.de/liste/norderstedt/haeuser/kaufen?lat=53.69494&lon=9.99532&sr=20&sort=distance"
-    NorderstedtWohnungKaufen = "https://www.immowelt.de/liste/norderstedt/wohnungen/kaufen?lat=53.69494&lon=9.99532&sr=20&sort=distance"
-    NorderstedtWohnungMieten="https://www.immowelt.de/liste/norderstedt/wohnungen/mieten?lat=53.69494&lon=9.99532&sr=20&sort=distance"
-    NorderstedtHausMieten = "https://www.immowelt.de/liste/norderstedt/haeuser/mieten?lat=53.69494&lon=9.99532&sr=20&sort=distance"
-    RatzeburgHausKaufen = "https://www.immowelt.de/liste/ratzeburg/haeuser/kaufen?lat=53.6943&lon=10.7919&sr=50&sort=distance"
-    LudwigslustHausKaufen = "https://www.immowelt.de/liste/ludwigslust-meckl/haeuser/kaufen?lat=53.3283&lon=11.5002&sr=50&sort=distance"
 
-    urls = [NorderstedtHausKaufen, NorderstedtHausMieten, NorderstedtWohnungKaufen, NorderstedtWohnungMieten
-           , RatzeburgHausKaufen
-           , LudwigslustHausKaufen
-           ]
-    return urls
 
 if __name__ == "__main__":
     credential_path = "credentials.json"
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
     bucket_name = 'immobilienpreise'
-    urls = create_list_of_urls()
+    urls = make_immowelt_urls(locationList = ["berlin"])#,"norderstedt","wismar"])
     for url in urls:
         process_url(url)
 
