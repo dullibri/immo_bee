@@ -85,7 +85,6 @@ target/
 .ipynb_checkpoints
 
 # IPython
-notebooks/
 profile_default/
 ipython_config.py
 
