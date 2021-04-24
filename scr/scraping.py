@@ -91,7 +91,7 @@ def read_data_from_xpath(url, data):
     'ort':'//div[@class="location"]/span/text()',
     'merkmale':'//div[@class="merkmale"]/text()',
     #'stadteilbewertung':'//div[contains(@id,"divRating")]',
-    'preis':'//div[@class="hardfact"]/strong/strong/text()',
+    'preis':'//div[@class="hardfact"]/strong/strong/text()', #response.xpath('//div[contains(@class,"hardfact")]//div//text()').getall()
     'anzahl_raeume':'//div[@class="hardfact rooms"]/text()',
     'wohnflaeche':'//div[@class="hardfact "]/text()',
     'grundstuecksflaeche':'//div[@class="hardfact "]/text()',

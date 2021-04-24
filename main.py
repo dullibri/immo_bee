@@ -107,7 +107,7 @@ def get_details_from_url(url):
         rent_buy = "kaufen"
     city = re.search(r'/liste/(.*?)/', url).group(1)
     return (rent_buy, city, flat_house)
-#(rent_buy, city, flat_house) = get_details_from_url(test)
+
 
 
 def get_project_ids(bucket_name, headless=True, url=None, city="berlin", flat_house="wohnungen", rent_buy="kaufen", to_disc=False):
@@ -115,9 +115,7 @@ def get_project_ids(bucket_name, headless=True, url=None, city="berlin", flat_ho
         rent_buy, city, flat_house = get_details_from_url(url)
     else:
         url = 'https://www.immowelt.de/liste/'+city+'/'+flat_house+'/'+rent_buy
-    # https://www.immowelt.de/liste/berlin/wohnungen/kaufen
-    # https://www.immowelt.de/liste/berlin/haeuser/kaufen
-    # https://www.immowelt.de/liste/berlin/wohnungen/mieten
+
     destination_blob_name = str(date.today())+"-"+city+"-"+flat_house+"-"\
         + rent_buy+".txt"
     Exposes = list()
@@ -154,6 +152,10 @@ def dump_to_json(data, oldName):
     newName = txt_to_json(oldName)
     path = os.getcwd()
     path_data = os.path.join(path, "data", newName)
+    pathDataFolder = os.path.join(path,"data")
+    if not os.path.exists(pathDataFolder):
+        os.makedirs(pathDataFolder)
+
     with open(path_data, 'w', encoding='utf-8') as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
@@ -169,7 +171,10 @@ if __name__ == "__main__":
     credential_path = "credentials.json"
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
     bucket_name = 'immobilienpreise'
-    urls = make_immowelt_urls(locationList = ["berlin"])#,"norderstedt","wismar"])
+    locations = ["berlin","norderstedt","ratzeburg","ludwigslust-meckl","luebeck-hansestadt","wismar"]
+    locations = ["norderstedt"]
+
+    urls = make_immowelt_urls(locationList = locations)
     for url in urls:
         process_url(url)
 
