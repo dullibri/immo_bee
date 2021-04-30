@@ -9,6 +9,7 @@ from itertools import chain
 import time
 import re
 from scr.scraping import *
+from scr.cleaning import *
 import json
 
 def get_driver(headless=True):
@@ -171,10 +172,12 @@ if __name__ == "__main__":
     credential_path = "credentials.json"
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
     bucket_name = 'immobilienpreise'
-    locations = ["berlin","norderstedt","ratzeburg","ludwigslust-meckl","luebeck-hansestadt","wismar"]
-    locations = ["norderstedt"]
+    locations = ["berlin","ratzeburg","ludwigslust-meckl","luebeck-hansestadt","wismar"]
+    #locations = ["norderstedt"]
 
     urls = make_immowelt_urls(locationList = locations)
     for url in urls:
         process_url(url)
+    df = load_and_prepare_data()
+    save_data_as_excel(df)
 

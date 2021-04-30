@@ -3,13 +3,6 @@ from lxml import etree
 import re
 import json
 
-#test = '2021-02-28-hamburg-haeuser-kaufen.txt'
-#test = '2021-02-28-hamburg-wohnungen-kaufen.txt'
-#test = '2021-02-28-ludwigslust-meckl-haus-mieten.txt'
-#test = '2021-02-28-ludwigslust-meckl-haus-mieten.txt'
-#test = '2021-03-10-norderstedt-wohnungen-mieten.txt'
-#test = ['adsf','asdf']
-#re.findall(r'.txt$',test)
 
 def prepare_urls(exposes):
     """takes list or txt.file (path) containing expose-ids, returns list of urls"""
@@ -36,20 +29,31 @@ def get_tree(url):
     return etree.HTML(res.data, parser)
 
 def get_right_list_elements(result):
-    for key in ['title','ort','merkmale','anzahl_raeume','preis']:
+    """Some of the results are empty - therefore the try-except. Others are lists with more than one element nd only 
+    specific elements are relevant. 
+
+    Parameters
+    ----------
+        - result : dict of lists
+                   result of the xpath elements.
+    
+    Returns
+    -------
+        - result : dict of strings   
+    """
+    for key in ['title','ort','merkmale','weitere_eigenschaften','beschreibung']:
         try:
             result[key] = result[key][0]
         except:
-            continue
-    try:
-        result['wohnflaeche'] = result['wohnflaeche'][3]
-    except:
-        pass
-    try:
-        result['grundstuecksflaeche'] = result['grundstuecksflaeche'][5]
-    except:
-        pass
+            pass
+    for key in ['preis','anzahl_raeume','wohnflaeche','grundstuecksflaeche']:
+        try:
+            result[key] = result[key][1]
+        except:
+            pass
+    
     return result
+
 
 def checktype(obj):
     """Prüfen, ob es sich um eine Liste von Strings handelt
@@ -87,17 +91,17 @@ def read_data_from_xpath(url, data):
     result = {}
     result['url'] = url
     xpath_patterns = {
-    'title':'//title/text()',
-    'ort':'//div[@class="location"]/span/text()',
-    'merkmale':'//div[@class="merkmale"]/text()',
-    #'stadteilbewertung':'//div[contains(@id,"divRating")]',
-    'preis':'//div[@class="hardfact"]/strong/strong/text()', #response.xpath('//div[contains(@class,"hardfact")]//div//text()').getall()
-    'anzahl_raeume':'//div[@class="hardfact rooms"]/text()',
-    'wohnflaeche':'//div[@class="hardfact "]/text()',
-    'grundstuecksflaeche':'//div[@class="hardfact "]/text()',
-    'weitere_eigenschaften':'//ul[@class="textlist_icon_03 padding_top_none "]//span//text()',
-    'beschreibung':'//div[@class="section_content iw_right"]/p//text()',
-    }
+        'title':'//title/text()',
+        'ort':'//div[@class="location"]/span/text()',
+        'merkmale':'//div[@class="merkmale"]/text()',
+        #'stadteilbewertung':'//div[contains(@id,"divRating")]',
+        'preis':'//div[contains(@class,"hardfact")]//div[contains(string(),"preis") or contains(string(),"miete")]//text()', #response.xpath('//div[contains(@class,"hardfact")]//div//text()').getall()
+        'anzahl_raeume':'//div[contains(@class,"hardfact")]//div[contains(string(),"Zimmer")]//text()[1]',
+        'wohnflaeche':'//div[contains(@class,"hardfact")]//div[contains(string(),"Wohnfläche")]//text()',
+        'grundstuecksflaeche':'//div[contains(@class,"hardfact")]//div[contains(string(),"Grundstücksfl.")]//text()',
+        'weitere_eigenschaften':'//ul[@class="textlist_icon_03 padding_top_none "]//span//text()',
+        'beschreibung':'//div[@class="section_content iw_right"]/p//text()',
+        }
     for key, xpath_pattern in xpath_patterns.items():
         try: # falls kein Treffer in xpath
             uncleanContent = tree.xpath(xpath_pattern)
