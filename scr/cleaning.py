@@ -211,11 +211,13 @@ def load_and_prepare_data():
 
 # --- save and remove ---- #
 def save_data_as_csv(df):
+    df = df.drop(["weitere_eigenschaften","beschreibung"],axis=1)
+    print("beschreibung has been dropped")
     today = pd.to_datetime('today')
     date = str(today.date())
     pathData = os.path.join(".","data",date+".csv")
-    df[df.datumDownload==pd.to_datetime('today').normalize()].to_csv(pathData)
-
+    df[df.datumDownload==pd.to_datetime('today').normalize()].to_csv(pathData,sep=";",decimal=",")
+    
 def remove_expose_files():
     textfileslist = [a for a in os.listdir(os.getcwd()) if re.findall("^\d{4}.*txt$",a)]
     for file in textfileslist:
