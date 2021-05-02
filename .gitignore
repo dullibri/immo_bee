@@ -18,6 +18,7 @@ dist/
 downloads/
 data/
 test/
+notebooks/
 eggs/
 .eggs/
 lib/

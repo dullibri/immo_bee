@@ -172,12 +172,13 @@ if __name__ == "__main__":
     credential_path = "credentials.json"
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
     bucket_name = 'immobilienpreise'
-    locations = ["berlin","ratzeburg","ludwigslust-meckl","luebeck-hansestadt","wismar"]
-    #locations = ["norderstedt"]
-
+    locations = ["berlin","ratzeburg","norderstedt","ludwigslust-meckl","luebeck-hansestadt","wismar"]
+    locations = ["ludwigslust-meckl","schwerin","wismar","luebeck"]
+    #locations = ["dortmund"]
     urls = make_immowelt_urls(locationList = locations)
     for url in urls:
         process_url(url)
     df = load_and_prepare_data()
-    save_data_as_excel(df)
+    save_data_as_csv(df)
+    remove_expose_files()
 

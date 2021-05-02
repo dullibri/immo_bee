@@ -113,7 +113,10 @@ def prepare_price(df):
 
 def clean_numerical_cols(df):
     numCols = ["anzahl_raeume","wohnflaeche","grundstuecksflaeche"]
-    df[numCols] = df[numCols].applymap(replace_commas).applymap(pd.to_numeric)
+    df[numCols] = (df[numCols]
+                   .applymap(replace_commas)
+                   .applymap(lambda x: re.sub("k.A.","",x))
+                   .applymap(pd.to_numeric))
     print("numerical columns:",', '.join(numCols),"cleaned")
     return df
 
@@ -155,21 +158,13 @@ def insert_meta_data_columns(dfTmp,jsonFileName):
         dfTmp.insert(loc=colNum, column=name, value = tmpDictCols[name])
     return dfTmp
 
-def get_pathdata_and_listfilenames(location="notebook"):
+def get_pathdata_and_listfilenames():
     """
     creates path to raw data in json format, and creates a generator with
     [path]/[filename]
-    
-    Paramaters:
-        location (str): "notebook" if this file is run from notebook folder, 
-                        if any other string if run from main folder of project.
-    
-    Returns:
-        pathFile (generator)
     """
+    print(os.getcwd())
     pathData = os.path.join(".","data")
-    if location =="notebook":
-        pathData = os.path.join("..","data")
     jsonFilesList = [a for a in os.listdir(pathData) if re.findall("json$",a)]
     for fileName in jsonFilesList:
         pathFile = os.path.abspath(os.path.join(pathData,fileName))
@@ -177,20 +172,14 @@ def get_pathdata_and_listfilenames(location="notebook"):
 
 
 
-def load_data(location="notebook"):
+def load_data():
     """
     loads the data in data folder as json into pandas and adds metadata columns 
     derived from filenames
-    
-        Parameters:
-            location (str): "notebook" if this file is run from notebook folder, 
-                            if any other string if run from main folder of project.
-            
-        Results:
-            df
     """
     
     dfList = []
+    
     for pathFile, nameFile in get_pathdata_and_listfilenames():
         #print(nameFile)
         with open(pathFile) as data_file:    
@@ -204,7 +193,7 @@ def load_data(location="notebook"):
     return df
 
 def load_and_prepare_data():
-    df = load_data(location=None)
+    df = load_data()
     df = set_key_value_as_index(df)
 
     df = clean_df(df)
@@ -219,11 +208,15 @@ def load_and_prepare_data():
     df = df.drop_duplicates()
     
     return df
-def save_data_as_excel(df,location=None):
+
+# --- save and remove ---- #
+def save_data_as_csv(df):
     today = pd.to_datetime('today')
     date = str(today.date())
-    pathData = os.path.join(".","data",date)
-    if location =="notebook":
-        pathData = os.path.join("..","data",date)
-    
-    df[df.datumDownload==pd.to_datetime('today').normalize()].to_excel(date)
+    pathData = os.path.join(".","data",date+".csv")
+    df[df.datumDownload==pd.to_datetime('today').normalize()].to_csv(pathData)
+
+def remove_expose_files():
+    textfileslist = [a for a in os.listdir(os.getcwd()) if re.findall("^\d{4}.*txt$",a)]
+    for file in textfileslist:
+        os.remove(file)
