@@ -136,7 +136,7 @@ def get_project_ids(bucket_name, headless=True, url=None, city="berlin", flat_ho
         return href_extr(hrefs)
         
     if num_pages >1:
-        urls = [url+'?cp='+str(a) for a in range(1,num_pages+1)]
+        urls = [url+'?cp='+str(a) for a in range(2,num_pages+1)]
         with concurrent.futures.ThreadPoolExecutor() as executor:
             results = executor.map(get_expose_ids,urls)
         Exposes_tmp = [expose for expose in results]

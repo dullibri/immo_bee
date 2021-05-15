@@ -5273,3 +5273,71 @@ IPDL protocol error: Handler returned error code!
 
 ###!!! [Parent][DispatchAsyncMessage] Error: PMessagePort::Msg_PostMessages Processing error: message was deserialized, but the handler returned false (indicating failure)
 
+1621101763519	geckodriver	INFO	Listening on 127.0.0.1:55963
+1621101764535	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofilec1cSaH"
+*** You are running in headless mode.
+1621101765050	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1621101767598	Marionette	INFO	Listening on port 55970
+1621101767653	Marionette	WARN	TLS certificate errors will be ignored for this session
+1621101779851	geckodriver	INFO	Listening on 127.0.0.1:56138
+1621101780869	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofilesw65CT"
+*** You are running in headless mode.
+1621101781377	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1621101783454	Marionette	INFO	Listening on port 56145
+1621101783487	Marionette	WARN	TLS certificate errors will be ignored for this session
+1621101789236	geckodriver	INFO	Listening on 127.0.0.1:56254
+1621101790245	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofilexUjj78"
+*** You are running in headless mode.
+1621101790714	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1621101792907	Marionette	INFO	Listening on port 56261
+1621101792961	Marionette	WARN	TLS certificate errors will be ignored for this session
+IPDL protocol error: Handler returned error code!
+
+###!!! [Parent][DispatchAsyncMessage] Error: PMessagePort::Msg_PostMessages Processing error: message was deserialized, but the handler returned false (indicating failure)
+
+1621101805903	geckodriver	INFO	Listening on 127.0.0.1:56452
+1621101805907	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofilerZe5nD"
+*** You are running in headless mode.
+1621101806330	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1621101808158	Marionette	INFO	Listening on port 56457
+1621101808207	Marionette	WARN	TLS certificate errors will be ignored for this session
+IPDL protocol error: Handler returned error code!
+
+###!!! [Parent][DispatchAsyncMessage] Error: PMessagePort::Msg_PostMessages Processing error: message was deserialized, but the handler returned false (indicating failure)
+
+1621101975882	geckodriver	INFO	Listening on 127.0.0.1:56726
+1621101976891	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofileq5eo9l"
+*** You are running in headless mode.
+1621101977384	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1621101979620	Marionette	INFO	Listening on port 56733
+1621101979711	Marionette	WARN	TLS certificate errors will be ignored for this session
+1621101986847	geckodriver	INFO	Listening on 127.0.0.1:56878
+1621101987858	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofileVqjxSR"
+*** You are running in headless mode.
+1621101988334	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1621101990448	Marionette	INFO	Listening on port 56885
+1621101990568	Marionette	WARN	TLS certificate errors will be ignored for this session
+1621101997258	geckodriver	INFO	Listening on 127.0.0.1:56998
+1621101997262	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofilenB0eKK"
+*** You are running in headless mode.
+1621101997771	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1621101999983	Marionette	INFO	Listening on port 57003
+1621102000075	Marionette	WARN	TLS certificate errors will be ignored for this session
+1621102007861	geckodriver	INFO	Listening on 127.0.0.1:57158
+1621102008867	mozrunner::runner	INFO	Running command: "/Applications/Firefox.app/Contents/MacOS/firefox-bin" "--marionette" "-headless" "-foreground" "-no-remote" "-profile" "/var/folders/v4/hg4bb17554zfx_m0ff6bk2cc0000gn/T/rust_mozprofile1q8wdI"
+*** You are running in headless mode.
+1621102009325	Marionette	INFO	Marionette enabled
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1621102011540	Marionette	INFO	Listening on port 57165
+1621102011566	Marionette	WARN	TLS certificate errors will be ignored for this session
+IPDL protocol error: Handler returned error code!
+
+###!!! [Parent][DispatchAsyncMessage] Error: PMessagePort::Msg_PostMessages Processing error: message was deserialized, but the handler returned false (indicating failure)
+

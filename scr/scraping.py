@@ -2,6 +2,7 @@ import urllib3
 from lxml import etree
 import re
 import json
+import concurrent.futures
 
 
 def prepare_urls(exposes):
@@ -85,7 +86,7 @@ def remove_unwanted_elements(result):
             continue
     return result
 
-def read_data_from_xpath(url, data):
+def read_data_from_xpath(url):
     """Liest die Webseite und legt die gesuchten Element in data (dict) ab."""
     tree = get_tree(url)
     result = {}
@@ -113,18 +114,23 @@ def read_data_from_xpath(url, data):
     result = remove_unwanted_elements(result)
     return result
 
+def scrape_individual_object(url):
+    id = get_id_from_url(url)# is this still needed?
+    obj_data = read_data_from_xpath(url)
+    return obj_data
+
 def scrape_object_pages(exposes):
     """Main scrape file, takes exposes (list of ids as str), returns data
     """
-    urls =prepare_urls(exposes)
-
     data = {}
     data['objects'] = []
-    for url in urls:#[:5]:###ACHTUNGACHTUNGACHUNT :5 urls: #
-        id = get_id_from_url(url)
-        obj_data = read_data_from_xpath(url, data)
-        data['objects'].append(obj_data)
 
+    urls =prepare_urls(exposes)
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        results = executor.map(scrape_individual_object,urls)
+
+    data['objects'] = [result for result in results]
+    
     return data
     
 def make_immowelt_urls(locationList = ["luebeck-hansestadt","norderstedt","wismar"]):
