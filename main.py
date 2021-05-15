@@ -11,6 +11,7 @@ import re
 from scr.scraping import *
 from scr.cleaning import *
 import json
+import concurrent.futures
 
 def get_driver(headless=True):
     """
@@ -127,16 +128,20 @@ def get_project_ids(bucket_name, headless=True, url=None, city="berlin", flat_ho
     sel_soup = soup_get(url, driver)
     hrefs = href_finder(sel_soup)
     num_pages = n_pages(hrefs)
-
     Exposes = Exposes + href_extr(hrefs)
-
+    def get_expose_ids(url):
+        # move this into IN SCRAPING folder!!!!!!!!
+        sel_soup = soup_get(url, driver)
+        hrefs = href_finder(sel_soup)
+        return href_extr(hrefs)
+        
     if num_pages >1:
-
-        for a in range(2, num_pages):  # +1):
-            new_url = url+'?cp='+str(a)
-            soup_new = soup_get(new_url, driver)
-            href_new = href_finder(soup_new)
-            Exposes = Exposes+href_extr(href_new)
+        urls = [url+'?cp='+str(a) for a in range(1,num_pages+1)]
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            results = executor.map(get_expose_ids,urls)
+        Exposes_tmp = [expose for expose in results]
+        Exposes_tmp = [item for sublist in Exposes_tmp for item in sublist]
+        Exposes = Exposes + Exposes_tmp
 
     Exposes_text = " ".join(Exposes)
     if to_disc:
@@ -172,11 +177,14 @@ if __name__ == "__main__":
     credential_path = "credentials.json"
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
     bucket_name = 'immobilienpreise'
-    locations = ["berlin","ratzeburg","norderstedt","ludwigslust-meckl","luebeck-hansestadt","wismar"]
-    locations = ["ludwigslust-meckl","schwerin","wismar","luebeck"]
-    #locations = ["dortmund"]
-    urls = make_immowelt_urls(locationList = locations)
-    for url in urls:
+    
+    locations = ["ludwigslust-meckl","schwerin","wismar","luebeck","ratzeburg"]
+    locations = ["dortmund"]
+    locations = ["hamburg"]
+    locations = ["berlin"]
+    locations = ["norderstedt"]
+    start_urls = make_immowelt_urls(locationList = locations)
+    for url in start_urls:
         process_url(url)
     df = load_and_prepare_data()
     save_data_as_csv(df)
