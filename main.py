@@ -1,4 +1,5 @@
 import os
+import argparse
 from google.cloud import storage
 from datetime import date
 from selenium.webdriver.firefox.options import Options
@@ -173,16 +174,36 @@ def process_url(url):
     
 
 
+description="""
+This is a scraper for immowelt.de. You need to supply the name(s) of the 
+location(s) you want to scrape. If you do not specify anything more, it will 
+return an excel sheet with the houses and appartments on offer or for rent.
+
+{Not yet implemented: You can also specify rent/buy or houses/appartments reducing the 
+result respectively.}
+"""
+parser = argparse.ArgumentParser(description=description)
+
+parser.add_argument("locations",action="append",nargs="*",help="locations for which you like to scrape data")
+# need to be added:
+#parser.add_argument("-b","--buy", help="only objects for sale will be returned",action="store_true")
+#parser.add_argument("-r","--rent",help="only objects for rent will be returned",action="store_true")
+#parser.add_argument("-ap","--appartments",help="only appartments will be returned",action="store_true")
+#parser.add_argument("-ho","--houses",help="only houses will be returned",action="store_true")
+args = parser.parse_args()
+
 if __name__ == "__main__":
     credential_path = "credentials.json"
     os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
     bucket_name = 'immobilienpreise'
-    
-    locations = ["ludwigslust-meckl","schwerin","wismar","luebeck","ratzeburg"]
-    locations = ["dortmund"]
-    locations = ["hamburg"]
-    locations = ["berlin"]
-    locations = ["norderstedt"]
+    locations = args.locations[0]
+
+    # locations = ["ludwigslust-meckl","schwerin","wismar","luebeck","ratzeburg"]
+    # locations = ["dortmund"]
+    # locations = ["hamburg"]
+    # locations = ["norderstedt"]
+    # locations = ["berlin"]
+
     start_urls = make_immowelt_urls(locationList = locations)
     for url in start_urls:
         process_url(url)
