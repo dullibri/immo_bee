@@ -1,18 +1,22 @@
-import os
 import argparse
-from google.cloud import storage
-from datetime import date
-from selenium.webdriver.firefox.options import Options
-from selenium import webdriver
-from bs4 import BeautifulSoup
-from collections import OrderedDict
-from itertools import chain
-import time
-import re
-from scr.scraping import *
-from scr.cleaning import *
-import json
 import concurrent.futures
+import json
+import os
+import re
+import time
+from collections import OrderedDict
+from datetime import date
+from itertools import chain
+
+from bs4 import BeautifulSoup
+from google.cloud import storage
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+
+from scr import getargs as getarg
+from scr import scraping as scrap
+from scr.cleaning import *
+
 
 def get_driver(headless=True):
     """
@@ -31,26 +35,25 @@ def soup_get(url, driver):
     driver.get(url)
     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
     time.sleep(4)
-    html = driver.execute_script('return document.documentElement.outerHTML')
-    return BeautifulSoup(html, 'html.parser')
+    html = driver.execute_script("return document.documentElement.outerHTML")
+    return BeautifulSoup(html, "html.parser")
 
 
 def href_finder(soup_ele):
     """
     Finds all a["href"] in beautifulSoup object
     """
-    return [a['href'] for a in soup_ele.findAll('a', href=True)]
+    return [a["href"] for a in soup_ele.findAll("a", href=True)]
 
 
 def n_pages(hrefs):
     """
     Get number of pages to search
     """
-    cps = [re.findall('cp=(\w+)', a) for a in hrefs]
+    cps = [re.findall("cp=(\w+)", a) for a in hrefs]
     cps = list(filter(None, cps))
-    nPages = max([int(b[0]) for b in cps],default=1)
+    nPages = max([int(b[0]) for b in cps], default=1)
     return nPages
-
 
 
 def href_extr(hrefs):
@@ -58,7 +61,7 @@ def href_extr(hrefs):
     Takes soup element of one search page of immowelt and returns
     all the hrefs as list of str
     """
-    exposes = [re.findall('\/expose\/(\w+)', a) for a in hrefs]
+    exposes = [re.findall("\/expose\/(\w+)", a) for a in hrefs]
     exposes = [a[0] for a in exposes if len(a) != 0]
     exposes = list(OrderedDict.fromkeys(exposes))
     return exposes
@@ -68,7 +71,7 @@ def projekt_finder(hrefs):
     """
     Some of the Exposes are featured projects identified here
     """
-    projekts = [re.findall('\/projekte\/expose\/(\w+)', a) for a in hrefs]
+    projekts = [re.findall("\/projekte\/expose\/(\w+)", a) for a in hrefs]
     projekts = list(filter(None, projekts))
     projekts = [*projekts]
     return list(set(chain.from_iterable(projekts)))
@@ -84,17 +87,12 @@ def upload_blob(bucket_name, source_file_name, destination_blob_name):
 
     blob.upload_from_string(source_file_name)
 
-    print('File {} uploaded to {}.'.format(
-        source_file_name,
-        destination_blob_name))
+    print("File {} uploaded to {}.".format(source_file_name, destination_blob_name))
 
 
 def write_to_disc(destination_blob_name, Exposes):
-    with open(destination_blob_name,  "w") as f:
+    with open(destination_blob_name, "w") as f:
         f.write(Exposes)
-
-
-test = 'https://www.immowelt.de/liste/ratzeburg/haeuser/kaufen?lat=53.6943&lon=10.7919&sr=50&sort=distance'
 
 
 def get_details_from_url(url):
@@ -108,19 +106,25 @@ def get_details_from_url(url):
     rent_buy = "mieten"
     if re.search("kaufen", url):
         rent_buy = "kaufen"
-    city = re.search(r'/liste/(.*?)/', url).group(1)
+    city = re.search(r"/liste/(.*?)/", url).group(1)
     return (rent_buy, city, flat_house)
 
 
+def get_project_ids(
+    bucket_name,
+    headless=True,
+    url=None,
+    city="berlin",
+    flat_house="wohnungen",
+    rent_buy="kaufen",
+    to_disc=False,
+):
+    rent_buy, city, flat_house = get_details_from_url(url)
 
-def get_project_ids(bucket_name, headless=True, url=None, city="berlin", flat_house="wohnungen", rent_buy="kaufen", to_disc=False):
-    if url:
-        rent_buy, city, flat_house = get_details_from_url(url)
-    else:
-        url = 'https://www.immowelt.de/liste/'+city+'/'+flat_house+'/'+rent_buy
+    destination_blob_name = (
+        str(date.today()) + "-" + city + "-" + flat_house + "-" + rent_buy + ".txt"
+    )
 
-    destination_blob_name = str(date.today())+"-"+city+"-"+flat_house+"-"\
-        + rent_buy+".txt"
     Exposes = list()
 
     driver = get_driver(headless=headless)
@@ -130,16 +134,17 @@ def get_project_ids(bucket_name, headless=True, url=None, city="berlin", flat_ho
     hrefs = href_finder(sel_soup)
     num_pages = n_pages(hrefs)
     Exposes = Exposes + href_extr(hrefs)
+
     def get_expose_ids(url):
         # move this into IN SCRAPING folder!!!!!!!!
         sel_soup = soup_get(url, driver)
         hrefs = href_finder(sel_soup)
         return href_extr(hrefs)
-        
-    if num_pages >1:
-        urls = [url+'?cp='+str(a) for a in range(2,num_pages+1)]
+
+    if num_pages > 1:
+        urls = [url + "?cp=" + str(a) for a in range(2, num_pages + 1)]
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            results = executor.map(get_expose_ids,urls)
+            results = executor.map(get_expose_ids, urls)
         Exposes_tmp = [expose for expose in results]
         Exposes_tmp = [item for sublist in Exposes_tmp for item in sublist]
         Exposes = Exposes + Exposes_tmp
@@ -149,65 +154,45 @@ def get_project_ids(bucket_name, headless=True, url=None, city="berlin", flat_ho
         write_to_disc(destination_blob_name, Exposes_text)
     else:
         upload_blob(bucket_name, Exposes_text, destination_blob_name)
-    print(f'You have just retrieved {len(Exposes)} exposes.')
+    print(f"You have just retrieved {len(Exposes)} expose ids.")
     return Exposes_text, destination_blob_name
 
+
 def txt_to_json(oldName):
-    return re.sub(r'.txt','.json',oldName)
+    return re.sub(r".txt", ".json", oldName)
+
 
 def dump_to_json(data, oldName):
     newName = txt_to_json(oldName)
     path = os.getcwd()
     path_data = os.path.join(path, "data", newName)
-    pathDataFolder = os.path.join(path,"data")
+    pathDataFolder = os.path.join(path, "data")
     if not os.path.exists(pathDataFolder):
         os.makedirs(pathDataFolder)
 
-    with open(path_data, 'w', encoding='utf-8') as f:
+    with open(path_data, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
+
 def process_url(url):
-    Exposes_text, destination_blob_name = get_project_ids(bucket_name, url = url, to_disc=True)
-    data = scrape_object_pages(Exposes_text)
-    dump_to_json(data,destination_blob_name)
-    print(destination_blob_name,' processed.')
-    
+    Exposes_text, destination_blob_name = get_project_ids(
+        bucket_name, url=url, to_disc=True
+    )
+    data = scrap.scrape_object_pages(Exposes_text)
+    dump_to_json(data, destination_blob_name)
+    print(destination_blob_name, " scraped.")
 
-
-description="""
-This is a scraper for immowelt.de. You need to supply the name(s) of the 
-location(s) you want to scrape. If you do not specify anything more, it will 
-return an excel sheet with the houses and appartments on offer or for rent.
-
-{Not yet implemented: You can also specify rent/buy or houses/appartments reducing the 
-result respectively.}
-"""
-parser = argparse.ArgumentParser(description=description)
-
-parser.add_argument("locations",action="append",nargs="*",help="locations for which you like to scrape data")
-# need to be added:
-#parser.add_argument("-b","--buy", help="only objects for sale will be returned",action="store_true")
-#parser.add_argument("-r","--rent",help="only objects for rent will be returned",action="store_true")
-#parser.add_argument("-ap","--appartments",help="only appartments will be returned",action="store_true")
-#parser.add_argument("-ho","--houses",help="only houses will be returned",action="store_true")
-args = parser.parse_args()
 
 if __name__ == "__main__":
     credential_path = "credentials.json"
-    os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = credential_path
-    bucket_name = 'immobilienpreise'
-    locations = args.locations[0]
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credential_path
+    bucket_name = "immobilienpreise"
+    arguments = getarg.get_arguments()
+    # hamburg norderstedt kaltenkirchen-holst ludwigslust-meckl schwerin wismar luebeck-hansestadt ratzeburg dortmund berlin
 
-    # locations = ["ludwigslust-meckl","schwerin","wismar","luebeck","ratzeburg"]
-    # locations = ["dortmund"]
-    # locations = ["hamburg"]
-    # locations = ["norderstedt"]
-    # locations = ["berlin"]
-
-    start_urls = make_immowelt_urls(locationList = locations)
+    start_urls = scrap.make_immowelt_urls(arguments)
     for url in start_urls:
         process_url(url)
     df = load_and_prepare_data()
     save_data_as_csv(df)
     remove_expose_files()
-
