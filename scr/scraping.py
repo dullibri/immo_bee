@@ -208,7 +208,12 @@ def get_obj_and_transact_lists(arguments):
         (rent or buy) and for the object type (house or appartment)
     """
 
-    _, rent, buy, house, appartment, _ = arguments
+    rent, buy, house, appartment = (
+        arguments.rent,
+        arguments.buy,
+        arguments.house,
+        arguments.appartment,
+    )
     objectTypeList = ["haeuser", "wohnungen"]
     if house:
         objectTypeList = ["haeuser"]
@@ -238,7 +243,7 @@ def make_immowelt_urls(arguments):
     """
 
     radius = 50
-    locations, rent, buy, house, appartment, _ = arguments
+    locations = arguments.locations[0]
     objectTypeList, transactionList = get_obj_and_transact_lists(arguments)
 
     urls = []

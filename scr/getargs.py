@@ -2,14 +2,7 @@ import argparse
 
 
 def get_arguments():
-    """Collects the commandline arguments.
 
-    Returns:
-        arguments: (locations, rent, buy, house, appartment),
-                locations [list]: strings of locations to be scraped.
-                rent [boolean], buy [boolean], both are mutually exclusive.
-                house [boolean], rent [boolean], both are mutually exclusive.
-    """
     description = """
     This is a scraper for immowelt.de. You need to supply the name(s) of the 
     location(s) you want to scrape. If you do not specify anything more, it will 
@@ -54,28 +47,22 @@ def get_arguments():
     args = parser.parse_args()
     locations = args.locations[0]
     locations_formated = ", ".join([loc.capitalize() for loc in locations])
-    buy, rent, appartment, house, verbose = (
-        args.buy,
-        args.rent,
-        args.appartment,
-        args.house,
-        args.verbose,
-    )
+
     if args.verbose:
         print(60 * "-")
         print("\nLocations that will be scraped:", locations_formated)
-        if appartment:
+        if args.appartment:
             print("\nOnly appartments will be scraped.")
-        elif house:
+        elif args.house:
             print("\nOnly houses will be scraped.")
-        if buy:
+        if args.buy:
             print("Only objects for sale will be included.")
-        if rent:
+        if args.rent:
             print("Only objects for rent will be included.")
-        if not (appartment + house + rent + buy):
+        if not (args.appartment + args.house + args.rent + args.buy):
             print("\nRent and buy offers for houses and appartments will be scraped.")
         print("\n" + 60 * "-")
-    return (locations, rent, buy, house, appartment, verbose)
+    return args
 
 
 if __name__ == "__main__":
