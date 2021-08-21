@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/Users/dirkulbricht/opt/anaconda3/envs/hauspreis_getting_ids/bin/python"
+    "python.pythonPath": "venv/bin/python",
+    "python.formatting.provider": "autopep8"
 }

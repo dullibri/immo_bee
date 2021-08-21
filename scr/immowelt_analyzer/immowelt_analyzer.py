@@ -22,4 +22,4 @@ if __name__ == "__main__":
     save_data_as_csv(df)
     remove_expose_files()
 # my preferred scraping:
-# hamburg norderstedt kaltenkirchen-holst ludwigslust-meckl schwerin wismar luebeck-hansestadt ratzeburg dortmund berlin
+# hamburg landkreis-segeberg kaltenkirchen-holst norderstedt ludwigslust-meckl schwerin wismar luebeck-hansestadt ratzeburg dortmund berlin
