@@ -1,6 +1,7 @@
-from scr import getargs as getarg
-from scr import scraping as scrap
-from scr.cleaning import *
+
+from . import getargs as getarg
+from . import scraping as scrap
+from .cleaning import *
 
 
 def process_url(url):
@@ -13,8 +14,6 @@ def process_url(url):
 
 if __name__ == "__main__":
     arguments = getarg.get_arguments()
-    # for debugging:
-    # arguments = (["muenchen"], False, True, True, False, True)
     start_urls = scrap.make_immowelt_urls(arguments)
     for url in start_urls:
         process_url(url)
