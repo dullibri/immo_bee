@@ -41749,3 +41749,141 @@ console.log: WebExtensions: reset-default-search: starting.
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
 console.log: WebExtensions: reset-default-search: starting.
 console.log: WebExtensions: reset-default-search: No addons in our list are installed.
+console.error: services.settings: 
+  main/public-suffix-list Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  Message: TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  security-state/intermediates Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  Message: TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  security-state/intermediates Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  Message: TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  security-state/intermediates Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  Message: TypeError: NetworkError when attempting to fetch resource.
+1629903955762	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: timeout
+console.error: services.settings: 
+  security-state/cert-revocations Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  Message: TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  security-state/cert-revocations Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  Message: TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  security-state/cert-revocations Signature failed  TypeError: NetworkError when attempting to fetch resource.
+console.error: services.settings: 
+  Message: TypeError: NetworkError when attempting to fetch resource.
+JavaScript error: , line 0: uncaught exception: null
+JavaScript error: , line 0: uncaught exception: null
+JavaScript error: , line 0: uncaught exception: null
+console.error: services.settings: 
+  Message: AbortError: IndexedDB: blocklists/addons-bloomfilters getLastModified() IndexedDB:  execute() A request was aborted, for example through a call to IDBTransaction.abort.
+console.error: services.settings: 
+  Message: AbortError: IndexedDB: main/normandy-recipes-capabilities getLastModified() IndexedDB:  execute() A request was aborted, for example through a call to IDBTransaction.abort.
+JavaScript error: , line 0: uncaught exception: null
+JavaScript error: , line 0: uncaught exception: null
+JavaScript error: , line 0: uncaught exception: null
+JavaScript error: , line 0: uncaught exception: null
+JavaScript error: , line 0: uncaught exception: null
+JavaScript error: , line 0: uncaught exception: null
+JavaScript error: , line 0: uncaught exception: null
+JavaScript error: , line 0: uncaught exception: null
+JavaScript error: , line 0: uncaught exception: null
+JavaScript error: , line 0: uncaught exception: null
+2021-08-26 07:10:08.129 firefox-bin[12116:235474] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.132 firefox-bin[12994:255240] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.123 firefox-bin[13051:256419] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.120 firefox-bin[12398:242730] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.139 firefox-bin[12685:250289] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.130 firefox-bin[12324:241024] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.293 firefox-bin[12116:235474] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.294 firefox-bin[12324:241024] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.304 firefox-bin[13070:256977] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.304 firefox-bin[12893:253983] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.310 firefox-bin[12994:255240] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.310 firefox-bin[13029:255923] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.311 firefox-bin[12398:242730] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.311 firefox-bin[12685:250289] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.304 firefox-bin[12161:236203] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.304 firefox-bin[12352:241747] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.310 firefox-bin[13336:265334] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.310 firefox-bin[12218:237490] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.310 firefox-bin[12477:244524] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.310 firefox-bin[13090:257603] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.304 firefox-bin[12787:252812] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.304 firefox-bin[12703:250921] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.311 firefox-bin[13051:256419] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.304 firefox-bin[12244:238442] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.304 firefox-bin[12644:248697] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.304 firefox-bin[12608:247827] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.310 firefox-bin[12234:238007] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.304 firefox-bin[12377:242261] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.310 firefox-bin[12839:253390] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.303 firefox-bin[13174:260629] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.310 firefox-bin[12727:251909] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.354 firefox-bin[13070:256977] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.400 firefox-bin[12477:244524] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.400 firefox-bin[12218:237490] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.400 firefox-bin[12352:241747] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.399 firefox-bin[13336:265334] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.399 firefox-bin[13029:255923] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.423 firefox-bin[12727:251909] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.399 firefox-bin[12703:250921] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.399 firefox-bin[12893:253983] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.430 firefox-bin[13090:257603] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.431 firefox-bin[12234:238007] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.431 firefox-bin[12608:247827] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.431 firefox-bin[12839:253390] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.432 firefox-bin[13174:260629] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.432 firefox-bin[12377:242261] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.431 firefox-bin[12244:238442] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.431 firefox-bin[12644:248697] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.400 firefox-bin[12161:236203] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.430 firefox-bin[12787:252812] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.684 firefox-bin[12940:254568] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.703 firefox-bin[12940:254568] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:08.790 firefox-bin[12447:243982] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:08.803 firefox-bin[12447:243982] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.247 firefox-bin[13192:261192] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.248 firefox-bin[13192:261192] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.379 firefox-bin[13204:261845] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.379 firefox-bin[13204:261845] port matched the WindowServer port created in BindCGSToRunLoop
+1629954609424	addons.xpi	ERROR	System addon update list error Error: Failed downloading XML, status: 0, reason: error
+2021-08-26 07:10:09.455 firefox-bin[12671:249752] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.466 firefox-bin[12671:249752] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.485 firefox-bin[13317:264801] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.494 firefox-bin[13317:264801] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.525 firefox-bin[13137:259233] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.525 firefox-bin[13137:259233] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.538 firefox-bin[13129:258722] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.544 firefox-bin[13129:258722] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.553 firefox-bin[12719:251434] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.553 firefox-bin[12719:251434] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.567 firefox-bin[12566:246633] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.575 firefox-bin[12566:246633] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.578 firefox-bin[12542:246095] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.585 firefox-bin[12542:246095] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.600 firefox-bin[13156:259955] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.601 firefox-bin[13156:259955] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.621 firefox-bin[13292:264217] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.633 firefox-bin[13292:264217] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.652 firefox-bin[12519:245568] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.653 firefox-bin[12519:245568] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.666 firefox-bin[13112:258136] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.669 firefox-bin[13112:258136] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.697 firefox-bin[12495:245001] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.702 firefox-bin[12495:245001] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.718 firefox-bin[12425:243466] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.721 firefox-bin[12425:243466] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.820 firefox-bin[12585:247170] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:09.829 firefox-bin[12585:247170] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:09.832 firefox-bin[12661:249293] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:11.148 firefox-bin[12661:249293] port matched the WindowServer port created in BindCGSToRunLoop
+2021-08-26 07:10:11.148 firefox-bin[13242:262896] HIToolbox: received notification of WindowServer event port death.
+2021-08-26 07:10:11.166 firefox-bin[13242:262896] port matched the WindowServer port created in BindCGSToRunLoop
+JavaScript error: , line 0: uncaught exception: null
