@@ -6,8 +6,8 @@ Scrape housing data from German housing portal Immowelt.de and retrieve it in MS
 
 ## Installation
 
-python -m pip install immowelt_analyzer
+python -m pip install immo_bee
 
 ## Usage
 
-immowelt_analyzer --help
+immo_bee --help
