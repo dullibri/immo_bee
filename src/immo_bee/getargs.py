@@ -8,8 +8,8 @@ def get_arguments():
     location(s) you want to scrape. If you do not specify anything more, it will 
     return an excel sheet with the houses and appartments on offer or for rent.
 
-    {Not yet implemented: You can also specify rent/buy or houses/appartments reducing the 
-    result respectively.}
+    You can also specify rent/buy or houses/appartments reducing the 
+    result respectively.
     """
     parser = argparse.ArgumentParser(description=description)
     parser.add_argument(
