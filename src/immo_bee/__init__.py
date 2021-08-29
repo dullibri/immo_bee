@@ -11,14 +11,30 @@ def process_url(url):
     print("Scraping completed")
 
 
-def bee():
-    arguments = getarg.get_arguments()
+def bee(rent=True, buy=True, house=True, appartment=True, locations=None):
+
+    if locations:
+
+        class inputs:
+            rent = rent
+            buy = buy
+            house = house
+            appartment = appartment
+            locations = locations
+
+        arguments = inputs
+    else:
+        arguments = getarg.get_arguments()
+
     start_urls = scrap.make_immowelt_urls(arguments)
     for url in start_urls:
         process_url(url)
     df = load_and_prepare_data()
-    save_data_as_csv(df)
-    remove_expose_files()
+    if locations:
+        return df
+    else:
+        save_data_as_csv(df)
+        remove_expose_files()
 
 
 if __name__ == "__main__":
