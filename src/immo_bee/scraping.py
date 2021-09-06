@@ -297,7 +297,12 @@ def get_driver(headless=True, log_path="geckodriver.log"):
 
     options = Options()
     options.headless = headless
+<<<<<<< HEAD
     driver = webdriver.Firefox(options=options, service_log_path=log_path)
+=======
+    #driver = webdriver.Firefox(options=options, service_log_path='/tmp/geckodriver.log') 
+    driver = webdriver.Firefox(options=options)
+>>>>>>> main
     return driver
 
 

@@ -35,7 +35,7 @@ def remove_rows_without_price_or_zip(df):
     print(nrowComplete - nrowClean, " rows without price and zip data were deleted")
     return df
 
-
+print("hello")
 def clean_df(df):
     df = df.applymap(empty_list_to_string)
     unitSignsList = ["preis", "wohnflaeche", "grundstuecksflaeche"]
