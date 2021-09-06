@@ -290,13 +290,13 @@ def dump_to_json(data, url):
 # --- getting expose ids ---
 
 
-def get_driver(headless=True):
+def get_driver(headless=True, log_path="geckodriver.log"):
     """
     Initializes Firefox driver
     """
     options = Options()
     options.headless = headless
-    driver = webdriver.Firefox(options=options)
+    driver = webdriver.Firefox(options=options, service_log_path=log_path)
     return driver
 
 
