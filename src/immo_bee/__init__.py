@@ -5,15 +5,15 @@ from . import scraping as scrap
 from .cleaning import *
 
 
-def process_url(url):
+def process_url(url, log_path="geckodriver.log"):
     print("Processing : ", url)
-    Exposes_text = scrap.get_project_ids(url=url)
+    Exposes_text = scrap.get_project_ids(url=url, log_path=log_path)
     data = scrap.scrape_object_pages(Exposes_text)
     scrap.dump_to_json(data, url)
     print("Scraping completed")
 
 
-def bee(locations=None, rent=True, buy=True, house=True, appartment=True):
+def bee(locations=None, rent=True, buy=True, house=True, appartment=True, log_path="geckodriver.log"):
     """Scrapes locations from immowelt.de and returns a dataframe of the
     preprocessed data. Default: all houses and appartments and all offerings
     for rent and sale are included.
@@ -52,7 +52,7 @@ def bee(locations=None, rent=True, buy=True, house=True, appartment=True):
 
     start_urls = scrap.make_immowelt_urls(arguments)
     for url in start_urls:
-        process_url(url)
+        process_url(url, log_path)
     df = load_and_prepare_data()
 
     if locations:
