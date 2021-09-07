@@ -290,14 +290,14 @@ def dump_to_json(data, url):
 # --- getting expose ids ---
 
 
-def get_driver(headless=True):
+def get_driver(headless=True, log_path="geckodriver.log"):
     """
     Initializes Firefox driver
     """
+
     options = Options()
     options.headless = headless
-    #driver = webdriver.Firefox(options=options, service_log_path='/tmp/geckodriver.log') 
-    driver = webdriver.Firefox(options=options)
+    driver = webdriver.Firefox(options=options, service_log_path=log_path)
     return driver
 
 
@@ -390,7 +390,7 @@ def get_expose_ids(url_driver):
     return expose_extr(hrefs)
 
 
-def get_project_ids(headless=True, url=None):
+def get_project_ids(headless=True, url=None, log_path="geckodriver.log"):
     """Takes a starting url and crawls through all other pages of a
     search and returns the expose ids.
 
@@ -403,7 +403,7 @@ def get_project_ids(headless=True, url=None):
     """
     Exposes = list()
 
-    driver = get_driver(headless=headless)
+    driver = get_driver(headless=headless, log_path=log_path)
 
     # get the first page and the total number of pages, num_pages
     sel_soup = soup_get(url, driver)
