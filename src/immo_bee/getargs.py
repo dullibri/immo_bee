@@ -43,6 +43,7 @@ def get_arguments():
         "-ho", "--house", help="only houses will be returned", action="store_true"
     )
     parser.add_argument("-v", "--verbose", action="store_true")
+    parser.add_argument("-l", "--logpath", default="geckodriver.log")
 
     args = parser.parse_args()
     locations = args.locations[0]
