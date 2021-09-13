@@ -212,8 +212,8 @@ def load_data(path_json_folder):
     return df
 
 
-def load_and_prepare_data(path_json_folder):
-    df = load_data(path_json_folder)
+def load_and_prepare_data(arguments):
+    df = load_data(arguments.path_json_folder)
     df = set_key_value_as_index(df)
 
     df = clean_df(df)
