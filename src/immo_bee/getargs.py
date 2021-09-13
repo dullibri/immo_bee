@@ -44,10 +44,10 @@ def get_arguments():
     )
     parser.add_argument("-v", "--verbose", action="store_true")
     parser.add_argument(
-        "-l", 
-        "--logpath", 
+        "-pl", 
+        "--path-geckodriver-log", 
         help="path to store the geckodriver logfile", 
-        default="geckodriver.log",
+        default=".",
         )
 
     args = parser.parse_args()

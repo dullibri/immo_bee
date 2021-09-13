@@ -1,3 +1,4 @@
+import os
 from numpy import busday_count
 
 from . import getargs as getarg
@@ -5,9 +6,10 @@ from . import scraping as scrap
 from .cleaning import *
 
 
-def process_url(url, log_path="geckodriver.log"):
+def process_url(url, path_gd_log_folder):
     print("Processing : ", url)
-    Exposes_text = scrap.get_project_ids(url=url, log_path=log_path)
+    path_gd_log = os.path.join(path_gd_log_folder, "geckodriver.log")
+    Exposes_text = scrap.get_project_ids(url=url, log_path=path_gd_log)
     data = scrap.scrape_object_pages(Exposes_text)
     scrap.dump_to_json(data, url)
     print("Scraping completed")
@@ -52,7 +54,7 @@ def bee(locations=None, rent=True, buy=True, house=True, appartment=True):
 
     start_urls = scrap.make_immowelt_urls(arguments)
     for url in start_urls:
-        process_url(url, arguments.logpath)
+        process_url(url, arguments.path_geckodriver_log)
     df = load_and_prepare_data()
 
     if locations:
