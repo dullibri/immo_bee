@@ -43,6 +43,21 @@ def get_arguments():
         "-ho", "--house", help="only houses will be returned", action="store_true"
     )
     parser.add_argument("-v", "--verbose", action="store_true")
+    
+    parser.add_argument(
+        "-pc", 
+        "--path-csv-folder", 
+        help="local or s3 directory path to store the scraped data as csv file", 
+        default=".",
+        )
+    
+    parser.add_argument(
+        "-pj", 
+        "--path-json-folder", 
+        help="local directory path to store the scraped data as json files", 
+        default=".",
+        )
+      
     parser.add_argument(
         "-pl", 
         "--path-geckodriver-log", 

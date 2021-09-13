@@ -180,20 +180,18 @@ def insert_meta_data_columns(dfTmp, jsonFileName):
     return dfTmp
 
 
-def get_pathdata_and_listfilenames():
+def get_pathdata_and_listfilenames(path_json_folder):
     """
     creates path to raw data in json format, and creates a generator with
     [path]/[filename]
     """
-    print(os.getcwd())
-    pathData = os.path.join(".", "data")
-    jsonFilesList = [a for a in os.listdir(pathData) if re.findall("json$", a)]
+    jsonFilesList = [a for a in os.listdir(path_json_folder) if re.findall("json$", a)]
     for fileName in jsonFilesList:
-        pathFile = os.path.abspath(os.path.join(pathData, fileName))
+        pathFile = os.path.abspath(os.path.join(path_json_folder, fileName))
         yield pathFile, fileName
 
 
-def load_data():
+def load_data(path_json_folder):
     """
     loads the data in data folder as json into pandas and adds metadata columns
     derived from filenames
@@ -201,7 +199,7 @@ def load_data():
 
     dfList = []
 
-    for pathFile, nameFile in get_pathdata_and_listfilenames():
+    for pathFile, nameFile in get_pathdata_and_listfilenames(path_json_folder):
         # print(nameFile)
         with open(pathFile) as data_file:
             data = json.load(data_file)
@@ -214,8 +212,8 @@ def load_data():
     return df
 
 
-def load_and_prepare_data():
-    df = load_data()
+def load_and_prepare_data(arguments):
+    df = load_data(arguments.path_json_folder)
     df = set_key_value_as_index(df)
 
     df = clean_df(df)
@@ -233,16 +231,17 @@ def load_and_prepare_data():
 
 
 # --- save and remove ---- #
-def save_data_as_csv(df, all=False):
+def save_data_as_csv(df, path_csv_folder, all=False):
     df = df.drop(["weitere_eigenschaften", "beschreibung"], axis=1)
     print("beschreibung has been dropped")
     today = pd.to_datetime("today")
     date = str(today.date())
-    pathData = os.path.join(".", "data", date + ".csv")
+    path_csv = os.path.join(path_csv_folder, date + ".csv")
 
     if not all:
         df = df[df.datumDownload == pd.to_datetime("today").normalize()]
-    df.to_csv(pathData, sep=";", decimal=",")
+    print(path_csv)
+    df.to_csv(path_csv, sep=";", decimal=",")
 
 
 def remove_expose_files():

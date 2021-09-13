@@ -6,12 +6,13 @@ from . import scraping as scrap
 from .cleaning import *
 
 
-def process_url(url, path_gd_log_folder):
+def process_url(url, arguments):
+
     print("Processing : ", url)
-    path_gd_log = os.path.join(path_gd_log_folder, "geckodriver.log")
+    path_gd_log = os.path.join(arguments.path_geckodriver_log, "geckodriver.log")
     Exposes_text = scrap.get_project_ids(url=url, log_path=path_gd_log)
     data = scrap.scrape_object_pages(Exposes_text)
-    scrap.dump_to_json(data, url)
+    scrap.dump_to_json(data, url, arguments)
     print("Scraping completed")
 
 
@@ -54,13 +55,14 @@ def bee(locations=None, rent=True, buy=True, house=True, appartment=True):
 
     start_urls = scrap.make_immowelt_urls(arguments)
     for url in start_urls:
-        process_url(url, arguments.path_geckodriver_log)
-    df = load_and_prepare_data()
+        process_url(url, arguments)
+        
+    df = load_and_prepare_data(arguments)
 
     if locations:
         return df
     else:
-        save_data_as_csv(df)
+        save_data_as_csv(df,arguments.path_csv_folder)
         remove_expose_files()
 
 

@@ -263,7 +263,7 @@ def make_immowelt_urls(arguments):
     return urls
 
 
-def dump_to_json(data, url):
+def dump_to_json(data, url, arguments):
     """Takes data and dumps it to json in (newly to be created)
     data folder.
 
@@ -277,13 +277,11 @@ def dump_to_json(data, url):
         str(date.today()) + "-" + city + "-" + flat_house + "-" + rent_buy + ".json"
     )
 
-    path = os.getcwd()
-    path_data = os.path.join(path, "data", output_file_name)
-    pathDataFolder = os.path.join(path, "data")
-    if not os.path.exists(pathDataFolder):
-        os.makedirs(pathDataFolder)
+    path_json = os.path.join(arguments.path_json_folder, output_file_name)
+    if not os.path.exists(arguments.path_json_folder):
+        os.makedirs(arguments.path_json_folder)
 
-    with open(path_data, "w", encoding="utf-8") as f:
+    with open(path_json, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
 
 
