@@ -12,7 +12,7 @@ def process_url(url, arguments):
     path_gd_log = os.path.join(arguments.path_geckodriver_log, "geckodriver.log")
     Exposes_text = scrap.get_project_ids(url=url, log_path=path_gd_log)
     data = scrap.scrape_object_pages(Exposes_text)
-    scrap.dump_to_json(data, url, arguments.path_json_folder)
+    scrap.dump_to_json(data, url, arguments)
     print("Scraping completed")
 
 
