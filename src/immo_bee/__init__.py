@@ -16,7 +16,14 @@ def process_url(url, arguments):
     print("Scraping completed")
 
 
-def bee(locations=None, rent=True, buy=True, house=True, appartment=True):
+def bee(locations=None, 
+        rent=True, 
+        buy=True, 
+        house=True, 
+        appartment=True, 
+        data_folder="data", 
+        path_json_folder="data",
+        path_geckodriver_log="."):
     """Scrapes locations from immowelt.de and returns a dataframe of the
     preprocessed data. Default: all houses and appartments and all offerings
     for rent and sale are included.
@@ -31,13 +38,17 @@ def bee(locations=None, rent=True, buy=True, house=True, appartment=True):
         rent (bool, optional): include housing for rent. Defaults to True.
         buy (bool, optional): include housing for sale. Defaults to True.
         house (bool, optional): include houses. Defaults to True.
+        house (bool, optional): include houses. Defaults to True.
         appartment (bool, optional): include appartments. Defaults to True.
+        data_folder (string, optional): folder where to dump jsons. Defaults to "data".
+        path_geckodriver_log (string, optional): folder where to save the geckodriver log. Defaults to ".".
+
 
     Returns:
         pandas.DataFrame: All offerings preprocessed.
     """
-    print(locations)
     if locations:
+        print(f'Immobee is run as module, scraping: {locations}')    
 
         class inputs:
             pass
@@ -49,21 +60,24 @@ def bee(locations=None, rent=True, buy=True, house=True, appartment=True):
         arguments.buy = buy
         arguments.house = house
         arguments.appartment = appartment
+        arguments.data_folder = data_folder
+        arguments.path_json_folder = path_json_folder
+        arguments.path_geckodriver_log = path_geckodriver_log
 
     else:
         arguments = getarg.get_arguments()
+        print(f'Immobee is run from commandline, scraping: {arguments.locations}')    
 
     start_urls = scrap.make_immowelt_urls(arguments)
     for url in start_urls:
         process_url(url, arguments)
-        
+
     df = load_and_prepare_data(arguments)
 
     if locations:
         return df
     else:
-        save_data_as_csv(df,arguments.path_csv_folder)
-        remove_expose_files()
+        save_data(df, arguments.data_folder)
 
 
 if __name__ == "__main__":
