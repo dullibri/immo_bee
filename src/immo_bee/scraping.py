@@ -1,3 +1,4 @@
+# This Python file uses the following encoding: utf-8
 import concurrent.futures
 import json
 import os
@@ -11,7 +12,6 @@ from bs4 import BeautifulSoup
 from lxml import etree
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
-
 
 def prepare_urls(exposes):
     """Turns object ids into urls.
@@ -61,14 +61,19 @@ def get_right_list_elements(result):
         dict of strs
     """
 
-    for key in ["title", "ort", "merkmale", "weitere_eigenschaften", "beschreibung"]:
+    for key in [
+        "title",
+        "ort",
+        "merkmale",
+        "weitere_eigenschaften",
+        "beschreibung",
+        "anzahl_raeume",
+        "wohnflaeche",
+        "grundstuecksflaeche",
+        "preis",
+    ]:
         try:
             result[key] = result[key][0]
-        except:
-            pass
-    for key in ["preis", "anzahl_raeume", "wohnflaeche", "grundstuecksflaeche"]:
-        try:
-            result[key] = result[key][1]
         except:
             pass
 
@@ -118,25 +123,6 @@ def clean_whitespace(tmp_text):
     else:  # only one str
         return re.sub(r"\r\n[ ]*|[ ]*$", "", tmp_text)
 
-
-def remove_unwanted_elements(result):
-    """cleans result dict of xpath-scraping of individual objects of unwanted
-    whitespaces.
-
-    Args:
-        result (dict): contains list of strings that are the result of xpath scraping
-
-    Returns:
-        dict: each list in original dict cleaned of whitespaces.
-    """
-    for key in result.keys():
-        try:
-            result[key] = clean_whitespace(result[key])
-        except:
-            continue
-    return result
-
-
 def scrape_data_from_xpath(url):
     """Reads the relevant elements from website and returns
     elements as dict.
@@ -150,16 +136,18 @@ def scrape_data_from_xpath(url):
     tree = get_tree(url)
     result = {}
     result["url"] = url
-    xpath_patterns = {
+    xpath_patterns = xpath_patterns = {
         "title": "//title/text()",
         "ort": '//div[@class="location"]/span/text()',
-        "merkmale": '//div[@class="merkmale"]/text()',
-        "preis": '//div[contains(@class,"hardfact")]//div[contains(string(),"preis") or contains(string(),"miete")]//text()',  # response.xpath('//div[contains(@class,"hardfact")]//div//text()').getall()
-        "anzahl_raeume": '//div[contains(@class,"hardfact")]//div[contains(string(),"Zimmer")]//text()[1]',
-        "wohnflaeche": '//div[contains(@class,"hardfact")]//div[contains(string(),"Wohnfläche")]//text()',
-        "grundstuecksflaeche": '//div[contains(@class,"hardfact")]//div[contains(string(),"Grundstücksfl.")]//text()',
+        "adresse": "//span[@data-cy='address-city']//text()",
+        "merkmale": "//li[@class='ng-star-inserted']//text()",
+        "preis": '(//div[contains(@class,"hardfact")]//div[contains(string(),"preis") or contains(string(),"miete")]//text())[2]',  # response.xpath('//div[contains(@class,"hardfact")]//div//text()').getall()
+        "anzahl_raeume": '//div[contains(@class,"hardfact") and contains(string(),"Zimmer")]/span//text()',
+        "wohnflaeche": '//div[contains(@class,"hardfact") and contains(string(),"Wohnfl")]/span//text()',  #'//div[contains(@class,"hardfact")]//div[contains(string(),"Wohnfläche")]//text()',
+        "grundstuecksflaeche": '//div[contains(@class,"hardfact") and contains(string(),"Grundst")]/span//text()',
         "weitere_eigenschaften": '//ul[@class="textlist_icon_03 padding_top_none "]//span//text()',
         "beschreibung": '//div[@class="section_content iw_right"]/p//text()',
+        "energie": "//app-energy-equipment//text()",
     }
     for key, xpath_pattern in xpath_patterns.items():
         try:
@@ -168,8 +156,7 @@ def scrape_data_from_xpath(url):
             continue
 
         result[key] = uncleanContent
-    result = get_right_list_elements(result)
-    result = remove_unwanted_elements(result)
+
     return result
 
 
@@ -262,7 +249,6 @@ def make_immowelt_urls(arguments):
                 urls.append(url)
     return urls
 
-
 def dump_to_json(data, url, arguments):
     """Takes data and dumps it to json in (newly to be created)
     data folder.
@@ -276,10 +262,9 @@ def dump_to_json(data, url, arguments):
     output_file_name = (
         str(date.today()) + "-" + city + "-" + flat_house + "-" + rent_buy + ".json"
     )
-
-    path_json = os.path.join(arguments.path_json_folder, output_file_name)
-    if not os.path.exists(arguments.path_json_folder):
-        os.makedirs(arguments.path_json_folder)
+    os.makedirs(arguments.data_folder, exist_ok=True)
+    path_json = os.path.join(arguments.data_folder, output_file_name)
+    print(f"files will be dumped here: {path_json}")
 
     with open(path_json, "w", encoding="utf-8") as f:
         json.dump(data, f, ensure_ascii=False, indent=4)
@@ -294,8 +279,8 @@ def get_driver(headless=True, log_path="geckodriver.log"):
     """
 
     options = Options()
-    options.headless = headless
-    driver = webdriver.Firefox(options=options, service_log_path=log_path)
+    options.add_argument("--headless")
+    driver = webdriver.Firefox(options=options)
     return driver
 
 
@@ -317,7 +302,7 @@ def href_finder(soup_ele):
     return [a["href"] for a in soup_ele.findAll("a", href=True)]
 
 
-def n_pages(hrefs):
+def n_pages(sel_soup):
     """Get number of pages to search
 
     Args:
@@ -326,9 +311,8 @@ def n_pages(hrefs):
     Returns:
         int: number of pages to search for hrefs.
     """
-    cps = [re.findall("cp=(\w+)", a) for a in hrefs]
-    cps = list(filter(None, cps))
-    nPages = max([int(b[0]) for b in cps], default=1)
+    buttons = sel_soup.select("button[class*=navNumberButton]")
+    nPages = max(int(button.text) for button in buttons)
     return nPages
 
 
@@ -402,11 +386,11 @@ def get_project_ids(headless=True, url=None, log_path="geckodriver.log"):
     Exposes = list()
 
     driver = get_driver(headless=headless, log_path=log_path)
-
+    
     # get the first page and the total number of pages, num_pages
     sel_soup = soup_get(url, driver)
     hrefs = href_finder(sel_soup)
-    num_pages = n_pages(hrefs)
+    num_pages = n_pages(sel_soup)
     Exposes = Exposes + expose_extr(hrefs)
 
     if num_pages > 1:
