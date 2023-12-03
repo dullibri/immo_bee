@@ -2,7 +2,7 @@
 Author: dirk.ulbricht@gmail.com
 
 ## Purpose
-Scrape housing data from German housing portal Immowelt.de and retrieve as comma separted file or pandas data frame.
+Scrape housing data from German housing portal Immowelt.de and retrieve as comma separted file.
 
 ## Installation
 
