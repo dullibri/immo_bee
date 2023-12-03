@@ -124,6 +124,7 @@ venv.bak/
 .spyderproject
 .spyproject
 
+
 # Rope project settings
 .ropeproject
 
@@ -146,3 +147,8 @@ cython_debug/
 
 # geckodriver
 geckodriver.log
+*.json
+*.csv
+settings.json
+
+.vscode/settings.json
