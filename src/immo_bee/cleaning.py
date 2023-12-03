@@ -225,7 +225,7 @@ def load_and_prepare_data(arguments):
     except:
         pass
     # lists with one element or empty lists
-    df = df.applymap(lambda x: x[0] if len(x)==1 else ("" if len(x)==0 else x))
+    df = df.map(lambda x: x[0] if len(x)==1 else ("" if len(x)==0 else x))
 
     return df
 
