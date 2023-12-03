@@ -7,6 +7,8 @@ from sklearn.preprocessing import MultiLabelBinarizer
 
 
 # --- basic cleaning ---#
+# CURRENTLY MOST CLEANING DISABLED
+
 def empty_list_to_string(x):
     if isinstance(x, list) and len(x) == 0:
         return ""
@@ -15,11 +17,14 @@ def empty_list_to_string(x):
 
 
 def remove_unit_signs(x):
-    return re.sub("\s*m²|\s*€", "", x)
+    try:
+        return re.sub("\\s*m²|\\s*€", "", x)
+    except:
+        return f"unit_signs conversion of {x} failed"
 
 
 def remove_thousand_dot(x):
-    return re.sub("\.(?=[0-9]{3})", "", x)
+    return re.sub("\\.(?=[0-9]{3})", "", x)
 
 
 def replace_commas(x):
@@ -35,7 +40,7 @@ def remove_rows_without_price_or_zip(df):
     print(nrowComplete - nrowClean, " rows without price and zip data were deleted")
     return df
 
-print("hello")
+
 def clean_df(df):
     df = df.applymap(empty_list_to_string)
     unitSignsList = ["preis", "wohnflaeche", "grundstuecksflaeche"]
@@ -180,18 +185,18 @@ def insert_meta_data_columns(dfTmp, jsonFileName):
     return dfTmp
 
 
-def get_pathdata_and_listfilenames(path_json_folder):
+def get_pathdata_and_listfilenames(data_folder):
     """
     creates path to raw data in json format, and creates a generator with
     [path]/[filename]
     """
-    jsonFilesList = [a for a in os.listdir(path_json_folder) if re.findall("json$", a)]
+    jsonFilesList = [a for a in os.listdir(data_folder) if re.findall("json$", a)]
     for fileName in jsonFilesList:
-        pathFile = os.path.abspath(os.path.join(path_json_folder, fileName))
+        pathFile = os.path.abspath(os.path.join(data_folder, fileName))
         yield pathFile, fileName
 
 
-def load_data(path_json_folder):
+def load_data(data_folder):
     """
     loads the data in data folder as json into pandas and adds metadata columns
     derived from filenames
@@ -199,7 +204,7 @@ def load_data(path_json_folder):
 
     dfList = []
 
-    for pathFile, nameFile in get_pathdata_and_listfilenames(path_json_folder):
+    for pathFile, nameFile in get_pathdata_and_listfilenames(data_folder):
         # print(nameFile)
         with open(pathFile) as data_file:
             data = json.load(data_file)
@@ -213,40 +218,19 @@ def load_data(path_json_folder):
 
 
 def load_and_prepare_data(arguments):
-    df = load_data(arguments.path_json_folder)
+    df = load_data(arguments.data_folder)
     df = set_key_value_as_index(df)
-
-    df = clean_df(df)
-    df = get_zip_and_place(df)
-    df = remove_rows_without_price_or_zip(df)
-
-    df = binarize_merkmale(df)
-    df = unpack_list_elements(df)
-    df = prepare_price(df)
-    df["datumDownload"] = pd.to_datetime(df.datumDownload)
-    df = clean_numerical_cols(df)
-    df = df.drop_duplicates()
+    try:
+        df.drop("expose", inplace=True)  # jsons with not existing search name
+    except:
+        pass
+    # lists with one element or empty lists
+    df = df.applymap(lambda x: x[0] if len(x)==1 else ("" if len(x)==0 else x))
 
     return df
 
 
-# --- save and remove ---- #
-def save_data_as_csv(df, path_csv_folder, all=False):
-    df = df.drop(["weitere_eigenschaften", "beschreibung"], axis=1)
-    print("beschreibung has been dropped")
-    today = pd.to_datetime("today")
-    date = str(today.date())
-    path_csv = os.path.join(path_csv_folder, date + ".csv")
+def save_data(df, data_folder, all=False):
+    path_parquet = os.path.join(data_folder, "data.csv")
+    df.to_csv(path_parquet)
 
-    if not all:
-        df = df[df.datumDownload == pd.to_datetime("today").normalize()]
-    print(path_csv)
-    df.to_csv(path_csv, sep=";", decimal=",")
-
-
-def remove_expose_files():
-    textfileslist = [
-        a for a in os.listdir(os.getcwd()) if re.findall("^\d{4}.*txt$", a)
-    ]
-    for file in textfileslist:
-        os.remove(file)
