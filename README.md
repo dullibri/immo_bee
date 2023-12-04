@@ -8,9 +8,9 @@ Scrape housing data from German housing portal Immowelt.de and retrieve as comma
 
 Note: This package depends on Geckodriver that can not be imported using pip. More information here: [Windows](https://github.com/dullibri/hauspreis_getting_ids.git) and for Linux it's `sudo apt install firefox-geckodriver` and for Mac use  `npm install geckodriver`. 
 
-As long as this is still a test-version and being downloadable only from testpypi use:
+
 ```bash
-python -m pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ immo-bee
+python -m pip install immo-bee
 ```
 
 ## Usage
