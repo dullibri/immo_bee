@@ -1,0 +1,23 @@
+name: ib_export_test
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10
+  - beautifulsoup4
+  - numpy
+  - six
+  - pytz
+  - selenium==4.9.0 # here, the pinning is needed.
+  - urllib3
+  - soupsieve
+  - python-dateutil
+  - threadpoolctl
+  - pytest
+  - pandas
+  - scipy
+  - joblib
+  - scikit-learn
+  - lxml
+  - twine
+  - build
