@@ -1,0 +1,17 @@
+threadpoolctl
+urllib3
+scikit-learn
+six
+pandas
+build
+pytz
+python-dateutil
+twine
+numpy
+beautifulsoup4
+selenium==4.9.0
+scipy
+joblib
+soupsieve
+lxml
+pytest
