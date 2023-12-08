@@ -11,7 +11,6 @@ class argImit():
     e.g. 'python -m immo_bee schwerin haeuser kaufen'
     """
     locations = [["schwerin"]]
-    path_geckodriver_log = os.path.join(os.getcwd(),"..")
     path_json_folder = os.path.join(os.getcwd(),"..")
     rent = True
     buy = False

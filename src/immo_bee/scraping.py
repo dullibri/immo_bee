@@ -273,7 +273,7 @@ def dump_to_json(data, url, arguments):
 # --- getting expose ids ---
 
 
-def get_driver(headless=True, log_path="geckodriver.log"):
+def get_driver(headless=True):
     """
     Initializes Firefox driver
     """
@@ -385,7 +385,7 @@ def get_project_ids(headless=True, url=None, log_path="geckodriver.log"):
     """
     Exposes = list()
 
-    driver = get_driver(headless=headless, log_path=log_path)
+    driver = get_driver(headless=headless)
     
     # get the first page and the total number of pages, num_pages
     sel_soup = soup_get(url, driver)

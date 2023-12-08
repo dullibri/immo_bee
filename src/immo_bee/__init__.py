@@ -9,8 +9,7 @@ from .cleaning import *
 def process_url(url, arguments):
 
     print("Processing : ", url)
-    path_gd_log = os.path.join(arguments.path_geckodriver_log, "geckodriver.log")
-    Exposes_text = scrap.get_project_ids(url=url, log_path=path_gd_log)
+    Exposes_text = scrap.get_project_ids(url=url)
     data = scrap.scrape_object_pages(Exposes_text)
     scrap.dump_to_json(data, url, arguments)
     print("Scraping completed")
@@ -22,8 +21,8 @@ def bee(locations=None,
         house=True, 
         appartment=True, 
         data_folder="data", 
-        path_json_folder="data",
-        path_geckodriver_log="."):
+        path_json_folder="data"
+        ):
     """Scrapes locations from immowelt.de and returns a dataframe of the
     preprocessed data. Default: all houses and appartments and all offerings
     for rent and sale are included.
@@ -41,8 +40,6 @@ def bee(locations=None,
         house (bool, optional): include houses. Defaults to True.
         appartment (bool, optional): include appartments. Defaults to True.
         data_folder (string, optional): folder where to dump jsons. Defaults to "data".
-        path_geckodriver_log (string, optional): folder where to save the geckodriver log. Defaults to ".".
-
 
     Returns:
         pandas.DataFrame: All offerings preprocessed.
@@ -62,7 +59,6 @@ def bee(locations=None,
         arguments.appartment = appartment
         arguments.data_folder = data_folder
         arguments.path_json_folder = path_json_folder
-        arguments.path_geckodriver_log = path_geckodriver_log
 
     else:
         arguments = getarg.get_arguments()
