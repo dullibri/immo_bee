@@ -382,7 +382,7 @@ def get_project_ids(headless=True, url=None, log_path="geckodriver.log"):
         url (str, optional): starting url of search. Defaults to None.
 
     Returns:
-        list: expose ids as strings
+        str: expose ids separated by a blank.
     """
     Exposes = list()
 
@@ -410,7 +410,7 @@ def get_project_ids(headless=True, url=None, log_path="geckodriver.log"):
         Exposes_tmp = [item for sublist in Exposes_tmp for item in sublist]
         Exposes = Exposes + Exposes_tmp
 
-    Exposes_text = " ".join(Exposes)
+    expose_ids = " ".join(Exposes)
 
     print(f"You have just retrieved {len(Exposes)} expose ids.")
-    return Exposes_text
+    return expose_ids

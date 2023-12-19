@@ -9,8 +9,8 @@ from .cleaning import *
 
 def process_url(url, arguments):
     print("Processing : ", url)
-    Exposes_text = scrap.get_project_ids(url=url)
-    data = scrap.scrape_object_pages(Exposes_text)
+    expose_ids = scrap.get_project_ids(url=url)
+    data = scrap.scrape_object_pages(expose_ids)
     scrap.dump_to_json(data, url, arguments)
     print("Scraping completed")
 
