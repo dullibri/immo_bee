@@ -1,4 +1,5 @@
 import os
+
 from numpy import busday_count
 
 from . import getargs as getarg
@@ -7,7 +8,6 @@ from .cleaning import *
 
 
 def process_url(url, arguments):
-
     print("Processing : ", url)
     Exposes_text = scrap.get_project_ids(url=url)
     data = scrap.scrape_object_pages(Exposes_text)
@@ -15,14 +15,14 @@ def process_url(url, arguments):
     print("Scraping completed")
 
 
-def bee(locations=None, 
-        rent=True, 
-        buy=True, 
-        house=True, 
-        appartment=True, 
-        data_folder="data", 
-        path_json_folder="data"
-        ):
+def bee(
+    locations=None,
+    rent=True,
+    buy=True,
+    house=True,
+    appartment=True,
+    data_folder="data",
+):
     """Scrapes locations from immowelt.de and returns a dataframe of the
     preprocessed data. Default: all houses and appartments and all offerings
     for rent and sale are included.
@@ -45,7 +45,7 @@ def bee(locations=None,
         pandas.DataFrame: All offerings preprocessed.
     """
     if locations:
-        print(f'Immobee is run as module, scraping: {locations}')    
+        print(f"Immobee is run as module, scraping: {locations}")
 
         class inputs:
             pass
@@ -58,11 +58,10 @@ def bee(locations=None,
         arguments.house = house
         arguments.appartment = appartment
         arguments.data_folder = data_folder
-        arguments.path_json_folder = path_json_folder
 
     else:
         arguments = getarg.get_arguments()
-        print(f'Immobee is run from commandline, scraping: {arguments.locations}')    
+        print(f"Immobee is run from commandline, scraping: {arguments.locations}")
 
     start_urls = scrap.make_immowelt_urls(arguments)
     for url in start_urls:
@@ -78,6 +77,3 @@ def bee(locations=None,
 
 if __name__ == "__main__":
     bee()
-
-# my preferred scraping:
-# hamburg landkreis-segeberg kaltenkirchen-holst norderstedt ludwigslust-meckl schwerin wismar luebeck-hansestadt ratzeburg dortmund berlin

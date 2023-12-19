@@ -13,6 +13,7 @@ from lxml import etree
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 
+
 def prepare_urls(exposes):
     """Turns object ids into urls.
 
@@ -109,7 +110,6 @@ def clean_whitespace(tmp_text):
     """
 
     if checktype(tmp_text):
-
         tmp_res = []
         for line in tmp_text:
             line_clean = re.sub(
@@ -122,6 +122,7 @@ def clean_whitespace(tmp_text):
         return tmp_res
     else:  # only one str
         return re.sub(r"\r\n[ ]*|[ ]*$", "", tmp_text)
+
 
 def scrape_data_from_xpath(url):
     """Reads the relevant elements from website and returns
@@ -237,7 +238,6 @@ def make_immowelt_urls(arguments):
     for location in locations:
         for objectType in objectTypeList:
             for transaction in transactionList:
-
                 tmpList = [
                     "https://www.immowelt.de/liste",
                     location,
@@ -248,6 +248,7 @@ def make_immowelt_urls(arguments):
                 url = url + "?sr=" + str(radius) + "&sort=distance"
                 urls.append(url)
     return urls
+
 
 def dump_to_json(data, url, arguments):
     """Takes data and dumps it to json in (newly to be created)
@@ -386,7 +387,7 @@ def get_project_ids(headless=True, url=None, log_path="geckodriver.log"):
     Exposes = list()
 
     driver = get_driver(headless=headless)
-    
+
     # get the first page and the total number of pages, num_pages
     sel_soup = soup_get(url, driver)
     hrefs = href_finder(sel_soup)
