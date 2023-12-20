@@ -2,7 +2,6 @@ import argparse
 
 
 def get_arguments():
-
     description = """
     This is a scraper for immowelt.de. You need to supply the name(s) of the 
     location(s) you want to scrape. If you do not specify anything more, it will 
@@ -52,10 +51,10 @@ def get_arguments():
     )
 
     parser.add_argument(
-        "-pl",
-        "--path-geckodriver-log",
-        help="path to store the geckodriver logfile",
-        default=".",
+        "-s3",
+        "--s3-bucket",
+        help="name of s3 bucket to store the data to.",
+        default="",
     )
 
     args = parser.parse_args()

@@ -1,13 +1,16 @@
 # This Python file uses the following encoding: utf-8
 import concurrent.futures
 import json
+import logging
 import os
 import re
 import time
 from collections import OrderedDict
 from datetime import date
 
+import boto3
 import urllib3
+from botocore.exceptions import ClientError
 from bs4 import BeautifulSoup
 from lxml import etree
 from selenium import webdriver
@@ -250,19 +253,56 @@ def make_immowelt_urls(arguments):
     return urls
 
 
-def dump_to_json(data, url, arguments):
-    """Takes data and dumps it to json in (newly to be created)
-    data folder.
+def make_output_file_name(url):
+    """Create output file name.
 
     Args:
-        data (dict): scraping output
-        oldName (str): name with suffix ".txt"
+        url (str): url of object
+
+    Returns:
+        str: file name containting date, city, housing type, rent/buy with json suffix
     """
     rent_buy, city, flat_house = get_details_from_url(url)
 
     output_file_name = (
         str(date.today()) + "-" + city + "-" + flat_house + "-" + rent_buy + ".json"
     )
+    return output_file_name
+
+
+def dump_to_s3(bucket, data, url):
+    """Sends data via put request to s3 bucket.
+
+    Args:
+        bucket (str): name of the bucket.
+        data (dict): result of the scraping of one location and one type.
+        url (str): url that has been scraped.
+
+    """
+    f_name = make_output_file_name(url)
+    s3_client = boto3.client("s3")
+    data_string = json.dumps(data, indent=2).encode("utf-8")
+    try:
+        r = s3_client.put_object(Bucket=bucket, Body=data_string, Key=f_name)
+        r["f_name"] = f_name
+        logging.info(r)
+    except ClientError as e:
+        logging.error(e)
+
+
+def dump_to_json(data, url, arguments):
+    """
+    Dumps data to json.
+
+    Creates a data path if necessary and dumps it as json. Regarding the file name
+    see make_output_file_name.
+
+    Args:
+        data (dict): contains information on (multiple) housing object.
+        url (str): url of the website being the starting point of the scraping.
+        arguments (class): containing the settings for the scraping.
+    """
+    output_file_name = make_output_file_name(url)
     os.makedirs(arguments.data_folder, exist_ok=True)
     path_json = os.path.join(arguments.data_folder, output_file_name)
     print(f"files will be dumped here: {path_json}")

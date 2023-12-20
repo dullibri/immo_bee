@@ -11,7 +11,12 @@ def process_url(url, arguments):
     print("Processing : ", url)
     expose_ids = scrap.get_project_ids(url=url)
     data = scrap.scrape_object_pages(expose_ids)
-    scrap.dump_to_json(data, url, arguments)
+    s3_bucket = arguments.s3_bucket if len(arguments.s3_bucket) > 0 else None
+    print(s3_bucket)
+    if s3_bucket:
+        scrap.dump_to_s3(s3_bucket, data, url)
+    else:
+        scrap.dump_to_json(data, url, arguments)
     print("Scraping completed")
 
 
@@ -22,6 +27,7 @@ def bee(
     house=True,
     appartment=True,
     data_folder="data",
+    s3_bucket="",
 ):
     """Scrapes locations from immowelt.de and returns a dataframe of the
     preprocessed data. Default: all houses and appartments and all offerings
@@ -40,6 +46,7 @@ def bee(
         house (bool, optional): include houses. Defaults to True.
         appartment (bool, optional): include appartments. Defaults to True.
         data_folder (string, optional): folder where to dump jsons. Defaults to "data".
+        s3_bucket (str, optional): name of s3 bucket to put the data as json to.
 
     Returns:
         pandas.DataFrame: All offerings preprocessed.
@@ -58,6 +65,7 @@ def bee(
         arguments.house = house
         arguments.appartment = appartment
         arguments.data_folder = data_folder
+        arguments.s3_bucket = s3_bucket
 
     else:
         arguments = getarg.get_arguments()
