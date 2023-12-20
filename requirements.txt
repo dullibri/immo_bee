@@ -15,3 +15,4 @@ joblib
 soupsieve
 lxml
 pytest
+boto3
