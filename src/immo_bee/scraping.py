@@ -9,6 +9,7 @@ from collections import OrderedDict
 from datetime import date
 
 import boto3
+import certifi
 import urllib3
 from botocore.exceptions import ClientError
 from bs4 import BeautifulSoup
@@ -47,7 +48,7 @@ def get_tree(url):
     Returns:
         tree
     """
-    http = urllib3.PoolManager()
+    http = urllib3.PoolManager(cert_reqs="CERT_REQUIRED", ca_certs=certifi.where())
     res = http.request("GET", url)
     parser = etree.HTMLParser(recover=True, encoding="utf-8")
     return etree.HTML(res.data, parser)
