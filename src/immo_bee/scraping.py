@@ -354,7 +354,7 @@ def n_pages(sel_soup):
         int: number of pages to search for hrefs.
     """
     buttons = sel_soup.select("button[class*=navNumberButton]")
-    nPages = max(int(button.text) for button in buttons)
+    nPages = max([int(button.text) for button in buttons], default=1)
     return nPages
 
 
