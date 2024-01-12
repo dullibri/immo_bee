@@ -75,12 +75,15 @@ def bee(
     for url in start_urls:
         process_url(url, arguments)
 
-    df = load_and_prepare_data(arguments)
+    no_s3_given = len(arguments.s3_bucket) == 0
+    if no_s3_given:
+        print("wrong way")
+        df = load_and_prepare_data(arguments)
 
-    if locations:
-        return df
-    else:
-        save_data(df, arguments.data_folder)
+        if locations:
+            return df
+        else:
+            save_data(df, arguments.data_folder)
 
 
 if __name__ == "__main__":
